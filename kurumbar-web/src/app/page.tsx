@@ -1,33 +1,64 @@
-export default function Home() {
+"use client";
+
+import { useState } from "react";
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
+import AboutSection from "@/components/AboutSection";
+import MemberRegistration from "@/components/MemberRegistration";
+import MatrimonySection from "@/components/MatrimonySection";
+import MarketplaceSection from "@/components/MarketplaceSection";
+import JobsSection from "@/components/JobsSection";
+import NewsSection from "@/components/NewsSection";
+import GallerySection from "@/components/GallerySection";
+import IdVerificationWidget from "@/components/IdVerificationWidget";
+import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
+
+export default function HomePage() {
+  const [lang, setLang] = useState<"ta" | "en">("ta");
+
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-6 py-16">
-      <section className="w-full max-w-3xl rounded-3xl border border-border bg-surface p-8 shadow-sm sm:p-12">
-        <span className="inline-flex items-center rounded-full bg-accent-yellow px-3.5 py-1 text-xs font-bold tracking-wide text-primary-dark">
-          KURUMBAR • குரும்பர்
-        </span>
-        <h1 className="mt-4 text-3xl font-bold tracking-tight text-primary-dark sm:text-4xl">
-          Kurumbar Community Digital Platform
-        </h1>
-        <p className="mt-3 text-base leading-7 text-text-secondary">
-          Connecting and empowering the Kurumbar community with verified member
-          registration, community announcements, gallery, and member services at{" "}
-          <span className="font-semibold text-primary">www.kurumbar.org</span>.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <a
-            href="#registration"
-            className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-primary-dark"
-          >
-            Member Registration
-          </a>
-          <a
-            href="#contact"
-            className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-xl border border-primary px-6 py-2.5 text-sm font-semibold text-primary transition-colors duration-200 hover:bg-primary/5"
-          >
-            Contact Us
-          </a>
+    <div className="min-h-screen flex flex-col bg-[#FAFAF5]">
+      {/* Main Responsive Header */}
+      <Header lang={lang} setLang={setLang} />
+
+      {/* Main Content Sections */}
+      <main className="flex-1">
+        {/* Hero Section */}
+        <div id="home">
+          <Hero lang={lang} />
         </div>
-      </section>
-    </main>
+
+        {/* About Community Section */}
+        <AboutSection lang={lang} />
+
+        {/* Interactive Member Registration & Live Digital ID Card Generator */}
+        <MemberRegistration lang={lang} />
+
+        {/* Verified Matrimony Section */}
+        <MatrimonySection lang={lang} />
+
+        {/* Handloom Blankets & Livestock Marketplace Section */}
+        <MarketplaceSection lang={lang} />
+
+        {/* Community Employment & Careers Section */}
+        <JobsSection lang={lang} />
+
+        {/* Latest Announcements & News Section */}
+        <NewsSection lang={lang} />
+
+        {/* Cultural Photo Gallery Section */}
+        <GallerySection lang={lang} />
+
+        {/* Public Member ID Verification Section */}
+        <IdVerificationWidget lang={lang} />
+
+        {/* Contact Us & Headquarters Support Section */}
+        <ContactSection lang={lang} />
+      </main>
+
+      {/* Official Footer */}
+      <Footer lang={lang} />
+    </div>
   );
 }
