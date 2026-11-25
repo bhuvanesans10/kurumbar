@@ -69,6 +69,12 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
   // Card flip state in preview
   const [showCardBack, setShowCardBack] = useState<boolean>(false);
   const [isGenerated, setIsGenerated] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [serverMember, setServerMember] = useState<{
+    id: string;
+    membershipId: string;
+    status: string;
+  } | null>(null);
 
   // Clear specific field error on change
   const updateField = (field: string, value: string) => {
@@ -167,6 +173,9 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
 
   // Calculate Member ID format: TN + District Code + M/W + 7 Digits (e.g. TN01M0000001)
   const getMemberId = () => {
+    if (serverMember?.membershipId) {
+      return serverMember.membershipId;
+    }
     const districtIdx = Object.keys(TN_DISTRICTS_DATA).indexOf(formData.district);
     const districtCode = String(districtIdx >= 0 ? districtIdx + 1 : 1).padStart(2, "0");
     const genderCode = formData.gender === "MALE" ? "M" : "W";
@@ -183,15 +192,59 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
     });
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (!validateStep(step)) {
       return;
     }
     if (step < 4) {
       setStep(step + 1);
     } else {
-      setIsGenerated(true);
-      setStep(5);
+      setIsSubmitting(true);
+      try {
+        const apiUrl =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3005/api";
+        const res = await fetch(`${apiUrl}/members`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nameTa: formData.nameTa,
+            nameEn: formData.nameEn,
+            mobile: formData.mobile,
+            gender: formData.gender,
+            dob: formData.dob || undefined,
+            bloodGroup: formData.bloodGroup || undefined,
+            fatherName: formData.fatherName || undefined,
+            maritalStatus: formData.maritalStatus || undefined,
+            childrenMale: parseInt(formData.childrenMale) || 0,
+            childrenFemale: parseInt(formData.childrenFemale) || 0,
+            district: formData.district,
+            constituency: formData.constituency || undefined,
+            address: formData.address,
+            pincode: formData.pincode,
+            kulam: formData.kulam,
+            kuladeivam: formData.kuladeivam || undefined,
+            education: formData.education || undefined,
+            professionSector: formData.professionSector || undefined,
+            jobTitle: formData.jobTitle || undefined,
+            houseType: formData.houseType || undefined,
+            landAvailable: formData.landAvailable || undefined,
+            landDetails: formData.landDetails || undefined,
+            photoUrl: formData.photoUrl || undefined,
+            aadhaarMasked: "XXXX-XXXX-" + (otpInput || "8942"),
+          }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setServerMember(data);
+        }
+      } catch (err) {
+        console.warn("API registration fallback to offline preview:", err);
+      } finally {
+        setIsSubmitting(false);
+        setIsGenerated(true);
+        setStep(5);
+      }
     }
   };
 
@@ -781,6 +834,14 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                   <Sparkles className="w-4 h-4 text-[#15803D]" />
                   <span>{isTa ? "உறுப்பினர் பதிவு வெற்றிகரமாக முடிந்தது!" : "Member ID Card Successfully Generated!"}</span>
                 </div>
+                {serverMember && (
+                  <div className="mt-1 block">
+                    <span className="inline-flex items-center gap-1.5 bg-[#15803D] text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-xs">
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#FACC15]" />
+                      <span>நேரடி சர்வர் பதிவேற்றம் உறுதி செய்யப்பட்டது (Server Registered: {serverMember.membershipId})</span>
+                    </span>
+                  </div>
+                )}
                 <h3 className="text-2xl font-black text-[#14532D]">
                   {isTa ? "உங்கள் அதிகாரப்பூர்வ குறும்பர் டிஜிட்டல் உறுப்பினர் அட்டை" : "Your Official Kurumbar Digital Member ID Card"}
                 </h3>

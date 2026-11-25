@@ -30,6 +30,7 @@ export const ADMIN_CREDENTIALS = {
 
 interface MemberApplication {
   id: string
+  realDbId?: string
   nameTa: string
   nameEn: string
   gender: 'M' | 'F'
@@ -210,8 +211,63 @@ export default function App() {
     }, 500)
   }
 
+  // Fetch Live Member Applications from Server API
+  React.useEffect(() => {
+    const fetchLiveMembers = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3005/api'
+        const res = await fetch(`${apiUrl}/members?limit=100`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+            const mapped: MemberApplication[] = data.items.map((m: any) => ({
+              id: m.membershipId || m.id,
+              realDbId: m.id,
+              nameTa: m.nameTa,
+              nameEn: m.nameEn,
+              gender: m.gender === 'FEMALE' ? 'F' : 'M',
+              phone: m.mobile,
+              district: m.district,
+              kulam: m.kulam,
+              aadhaarMasked: m.aadhaarMasked || 'XXXX-XXXX-8942',
+              appliedDate: new Date(m.createdAt).toLocaleDateString('ta-IN', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+              }),
+              status: m.status,
+              avatar: m.photoUrl || '/images/member_avatar.png',
+            }))
+            setApplications((prev) => {
+              const liveIds = new Set(mapped.map((x) => x.id))
+              const remaining = prev.filter((x) => !liveIds.has(x.id))
+              return [...mapped, ...remaining]
+            })
+          }
+        }
+      } catch (err) {
+        console.warn('Live API member sync failed, using local demo data:', err)
+      }
+    }
+    fetchLiveMembers()
+  }, [])
+
   // Handle Application Approval/Rejection
-  const handleUpdateStatus = (id: string, newStatus: 'APPROVED' | 'REJECTED') => {
+  const handleUpdateStatus = async (id: string, newStatus: 'APPROVED' | 'REJECTED') => {
+    const target = applications.find((a) => a.id === id)
+    const targetId = target?.realDbId || id
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3005/api'
+      await fetch(`${apiUrl}/members/${targetId}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      })
+    } catch (err) {
+      console.warn('Backend status update failed, fallback to local state:', err)
+    }
+
     setApplications((prev) =>
       prev.map((app) => (app.id === id ? { ...app, status: newStatus } : app))
     )
