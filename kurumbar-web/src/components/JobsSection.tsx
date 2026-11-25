@@ -25,14 +25,14 @@ export default function JobsSection({ lang }: JobsProps) {
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 bg-[#DCFCE7] text-[#14532D] text-xs font-bold px-3.5 py-1.5 rounded-full mb-3 border border-[#15803D]/20">
             <Briefcase className="w-4 h-4 text-[#15803D]" />
-            <span>{isTa ? "குரும்பர் சமுதாய வேலைவாய்ப்பு மையம்" : "Community Career & Job Portal"}</span>
+            <span>{isTa ? "குறும்பர் சமுதாய வேலைவாய்ப்பு மையம்" : "Community Career & Job Portal"}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-[#14532D] tracking-tight">
             {isTa ? "சமூக இளைஞர்களுக்கான வேலைவாய்ப்புகள்" : "Career Opportunities for Youth"}
           </h2>
           <p className="text-base text-[#475569] mt-3">
             {isTa
-              ? "குரும்பர் தொழிலதிபர்கள், நிறுவனங்கள் மற்றும் தொழில் முனைவோர் வழங்கும் நேரடி வேலைவாய்ப்புகள். தகுதியுள்ள நபர்கள் நேரடியாக தொடர்பு கொண்டு பணியில் சேரலாம்."
+              ? "குறும்பர் தொழிலதிபர்கள், நிறுவனங்கள் மற்றும் தொழில் முனைவோர் வழங்கும் நேரடி வேலைவாய்ப்புகள். தகுதியுள்ள நபர்கள் நேரடியாக தொடர்பு கொண்டு பணியில் சேரலாம்."
               : "Direct employment opportunities posted by community businesses, institutions, and entrepreneurs across Tamil Nadu with direct employer contact."}
           </p>
         </div>

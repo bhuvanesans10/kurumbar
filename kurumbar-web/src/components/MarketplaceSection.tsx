@@ -32,14 +32,14 @@ export default function MarketplaceSection({ lang }: MarketplaceProps) {
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 bg-[#DCFCE7] text-[#14532D] text-xs font-bold px-3.5 py-1.5 rounded-full mb-3 border border-[#15803D]/20">
             <ShoppingBag className="w-4 h-4 text-[#15803D]" />
-            <span>{isTa ? "குரும்பர் சமுதாய வணிக & கால்நடை சந்தை" : "Community Trade & Marketplace"}</span>
+            <span>{isTa ? "குறும்பர் சமுதாய வணிக & கால்நடை சந்தை" : "Community Trade & Marketplace"}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-[#14532D] tracking-tight">
             {isTa ? "பாரம்பரிய கைத்தறி கம்பளி & நேரடி கால்நடை விற்பனை" : "Traditional Handloom Blankets & Livestock"}
           </h2>
           <p className="text-base text-[#475569] mt-3">
             {isTa
-              ? "குரும்பர் விவசாய பெருமக்கள் மற்றும் கைத்தறி நெசவாளர்களிடம் இருந்து நேரடியாக தரமான செம்மறி ஆடுகள் மற்றும் தூய கம்பளிப் போர்வைகளை இடைத்தரகர் இன்றி வாங்குங்கள்."
+              ? "குறும்பர் விவசாய பெருமக்கள் மற்றும் கைத்தறி நெசவாளர்களிடம் இருந்து நேரடியாக தரமான செம்மறி ஆடுகள் மற்றும் தூய கம்பளிப் போர்வைகளை இடைத்தரகர் இன்றி வாங்குங்கள்."
               : "Buy directly from Kurumbar farmers and master weavers — pure native sheep, authentic handloom wool blankets (Kambli), and organic farm produce with zero middlemen markups."}
           </p>
 
@@ -128,7 +128,7 @@ export default function MarketplaceSection({ lang }: MarketplaceProps) {
         {/* Notice on Direct Trading */}
         <div className="mt-12 bg-[#FAFAF5] rounded-2xl p-6 border border-[#E2E8F0] text-center max-w-3xl mx-auto">
           <p className="text-xs text-[#475569] leading-relaxed">
-            <strong className="text-[#14532D]">நேரடி பரிவர்த்தனை விதிமுறை:</strong> குரும்பர் சமுதாய தளம் ஒரு தகவல் தொடர்பு பாலமாக மட்டுமே செயல்படுகிறது. விற்பனை அல்லது பொருட்களின் நேரடி பரிவர்த்தனை வாங்குபவருக்கும் விற்பனையாளருக்கும் இடையே மட்டுமே நடைபெறும்.
+            <strong className="text-[#14532D]">நேரடி பரிவர்த்தனை விதிமுறை:</strong> குறும்பர் சமுதாய தளம் ஒரு தகவல் தொடர்பு பாலமாக மட்டுமே செயல்படுகிறது. விற்பனை அல்லது பொருட்களின் நேரடி பரிவர்த்தனை வாங்குபவருக்கும் விற்பனையாளருக்கும் இடையே மட்டுமே நடைபெறும்.
           </p>
         </div>
       </div>

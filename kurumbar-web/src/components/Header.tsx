@@ -89,7 +89,7 @@ export default function Header({ lang, setLang }: HeaderProps) {
           <Link href="/" className="flex items-center gap-3.5 group">
             <div className="relative w-12 h-12 rounded-xl overflow-hidden shadow-xs border border-[#15803D]/20 bg-[#FAFAF5] p-1 flex items-center justify-center transition-transform group-hover:scale-105">
               <Image
-                src="/brand/logo-concept-1-icon.png"
+                src="/brand/logo.png"
                 alt="Kurumbar Logo"
                 width={44}
                 height={44}
@@ -103,7 +103,7 @@ export default function Header({ lang, setLang }: HeaderProps) {
                   KURUMBAR
                 </span>
                 <span className="bg-[#FACC15] text-[#14532D] text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
-                  குரும்பர்
+                  குறும்பர்
                 </span>
               </div>
               <p className="text-[11px] text-[#475569] font-medium tracking-wide">

@@ -36,7 +36,7 @@ const GALLERY_PHOTOS = [
   },
   {
     url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&auto=format&fit=crop&q=80",
-    caption: "38 மாவட்ட குரும்பர் இளைஞரணி எழுச்சி மாநாடு",
+    caption: "38 மாவட்ட குறும்பர் இளைஞரணி எழுச்சி மாநாடு",
     category: "இளைஞரணி (Youth Meet)",
   },
 ];
@@ -59,7 +59,7 @@ export default function GallerySection({ lang }: GalleryProps) {
           </h2>
           <p className="text-base text-[#475569] mt-3">
             {isTa
-              ? "குரும்பர் சமுதாய திருவிழாக்கள், கைத்தறி கலைகள், மாநாடுகள் மற்றும் மாணவர் கௌரவிப்பு நிகழ்வுகளின் புகைப்படத் தொகுப்பு."
+              ? "குறும்பர் சமுதாய திருவிழாக்கள், கைத்தறி கலைகள், மாநாடுகள் மற்றும் மாணவர் கௌரவிப்பு நிகழ்வுகளின் புகைப்படத் தொகுப்பு."
               : "Moments celebrating Kurumbar temple traditions, weaving crafts, youth conventions, and welfare gatherings."}
           </p>
         </div>

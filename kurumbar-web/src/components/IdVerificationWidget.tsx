@@ -38,7 +38,7 @@ export default function IdVerificationWidget({ lang }: IdVerificationProps) {
             <span>{isTa ? "பொது சரிபார்ப்பு தளம் • Public Verification" : "Public QR Verification"}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-[#14532D] tracking-tight">
-            {isTa ? "குரும்பர் அடையாள அட்டை உண்மைத்தன்மை சரிபார்ப்பு" : "Verify Digital Member ID Card"}
+            {isTa ? "குறும்பர் அடையாள அட்டை உண்மைத்தன்மை சரிபார்ப்பு" : "Verify Digital Member ID Card"}
           </h2>
           <p className="text-base text-[#475569] mt-3">
             {isTa
@@ -99,7 +99,7 @@ export default function IdVerificationWidget({ lang }: IdVerificationProps) {
                           உறுதிசெய்யப்பட்டது • VERIFIED MEMBER
                         </span>
                         <span className="text-[10px] text-[#475569]">
-                          தமிழ்நாடு குரும்பர் சமுதாய அதிகாரப்பூர்வ பதிவேடு
+                          தமிழ்நாடு குறும்பர் சமுதாய அதிகாரப்பூர்வ பதிவேடு
                         </span>
                       </div>
                     </div>
@@ -111,7 +111,7 @@ export default function IdVerificationWidget({ lang }: IdVerificationProps) {
                   <div className="flex gap-4 items-center">
                     <div className="w-16 h-20 rounded-xl overflow-hidden relative shrink-0 border border-[#E2E8F0] bg-[#FAFAF5]">
                       <Image
-                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80"
+                        src="/images/member_avatar.png"
                         alt="Member Photo"
                         fill
                         className="object-cover"

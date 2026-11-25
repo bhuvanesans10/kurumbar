@@ -40,7 +40,7 @@ export default function Footer({ lang }: FooterProps) {
                   KURUMBAR
                 </span>
                 <span className="ml-2 bg-[#FACC15] text-[#14532D] text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
-                  குரும்பர்
+                  குறும்பர்
                 </span>
                 <p className="text-xs text-[#FACC15] font-medium">
                   அதிகாரப்பூர்வ சமுதாய இணையதளம் • www.kurumbar.org
@@ -50,7 +50,7 @@ export default function Footer({ lang }: FooterProps) {
 
             <p className="text-xs text-white/80 leading-relaxed max-w-sm">
               {isTa
-                ? "உலகெங்கும் வாழும் குரும்பர் (குரும்பா / கும்பா கவுண்டர்) சமுதாய மக்களை டிஜிட்டல் முறையில் ஒருங்கிணைத்து, கல்வி, திருமணம், வேலைவாய்ப்பு மற்றும் பாரம்பரிய வணிக சேவைகளை வழங்கும் அதிகாரப்பூர்வ தளம்."
+                ? "உலகெங்கும் வாழும் குறும்பர் (குரும்பா / கும்பா கவுண்டர்) சமுதாய மக்களை டிஜிட்டல் முறையில் ஒருங்கிணைத்து, கல்வி, திருமணம், வேலைவாய்ப்பு மற்றும் பாரம்பரிய வணிக சேவைகளை வழங்கும் அதிகாரப்பூர்வ தளம்."
                 : "Centralized digital platform unifying the global Kurumbar community with verified member registration, digital ID cards, matrimony, rural trade, and youth employment."}
             </p>
 
@@ -107,7 +107,7 @@ export default function Footer({ lang }: FooterProps) {
             <ul className="space-y-2 text-xs text-white/80 font-medium">
               <li>
                 <Link href="#matrimony" className="hover:text-[#FACC15] transition-colors">
-                  குரும்பர் வரன் தேடல் (Matrimony)
+                  குறும்பர் வரன் தேடல் (Matrimony)
                 </Link>
               </li>
               <li>
@@ -159,7 +159,7 @@ export default function Footer({ lang }: FooterProps) {
         {/* Bottom copyright and legal notice */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/70 gap-4">
           <p>
-            © 2026 தமிழ்நாடு குரும்பர் சமுதாய சங்கம். அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை. (www.kurumbar.org)
+            © 2026 தமிழ்நாடு குறும்பர் சமுதாய சங்கம். அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை. (www.kurumbar.org)
           </p>
           <div className="flex items-center gap-6 text-[11px]">
             <Link href="#contact" className="hover:text-[#FACC15]">

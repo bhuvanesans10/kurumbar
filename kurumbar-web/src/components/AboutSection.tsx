@@ -55,14 +55,14 @@ export default function AboutSection({ lang }: AboutProps) {
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 bg-[#DCFCE7] text-[#14532D] text-xs font-bold px-3.5 py-1.5 rounded-full border border-[#15803D]/20">
               <ScrollText className="w-4 h-4 text-[#15803D]" />
-              <span>{isTa ? "குரும்பர் சமுதாய வரலாறு & நோக்கம்" : "Our Heritage & Mission"}</span>
+              <span>{isTa ? "குறும்பர் சமுதாய வரலாறு & நோக்கம்" : "Our Heritage & Mission"}</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl font-black text-[#14532D] tracking-tight leading-snug">
               {isTa ? (
                 <>
                   பாரம்பரியமும் பெருமையும் கொண்ட{" "}
-                  <span className="text-[#15803D]">குரும்பர் சமுதாயத்தின்</span> வரலாறு
+                  <span className="text-[#15803D]">குறும்பர் சமுதாயத்தின்</span> வரலாறு
                 </>
               ) : (
                 <>
@@ -74,7 +74,7 @@ export default function AboutSection({ lang }: AboutProps) {
 
             <p className="text-sm sm:text-base text-[#475569] leading-relaxed">
               {isTa
-                ? "குரும்பர் சமூகம் (குரும்பா / கும்பா கவுண்டர்) தமிழகத்தின் தொன்மையான மேய்ச்சல் மற்றும் வேளாண் நாகரிகத்தின் ஆணிவேராக விளங்கும் சமுதாயமாகும். செம்மறி ஆட்டு ரோமத்தில் பாரம்பரிய கைத்தறி கம்பளிகள் நெய்தல், இயற்கை விவசாயம் மற்றும் சமூக ஒற்றுமை ஆகியவற்றில் தலைமுறை தலைமுறையாக அளப்பரிய பங்களிப்பை ஆற்றி வருகின்றனர்."
+                ? "குறும்பர் சமூகம் (குரும்பா / கும்பா கவுண்டர்) தமிழகத்தின் தொன்மையான மேய்ச்சல் மற்றும் வேளாண் நாகரிகத்தின் ஆணிவேராக விளங்கும் சமுதாயமாகும். செம்மறி ஆட்டு ரோமத்தில் பாரம்பரிய கைத்தறி கம்பளிகள் நெய்தல், இயற்கை விவசாயம் மற்றும் சமூக ஒற்றுமை ஆகியவற்றில் தலைமுறை தலைமுறையாக அளப்பரிய பங்களிப்பை ஆற்றி வருகின்றனர்."
                 : "The Kurumbar community represents one of the most ancient pastoral and agrarian traditions of South India. Renowned for their ethical livestock stewardship, handloom wool craftsmanship (Kambli), and deep reverence for nature, the community continues to be a cornerstone of rural harmony."}
             </p>
 
@@ -88,7 +88,7 @@ export default function AboutSection({ lang }: AboutProps) {
                 </h4>
                 <p className="text-xs text-[#475569] leading-normal">
                   {isTa
-                    ? "அனைத்து மாவட்ட குரும்பர் மக்களையும் டிஜிட்டல் உறுப்பினர் அட்டையுடன் பதிவு செய்து பாதுகாப்பான சமுதாய பதிவேட்டை உருவாக்குதல்."
+                    ? "அனைத்து மாவட்ட குறும்பர் மக்களையும் டிஜிட்டல் உறுப்பினர் அட்டையுடன் பதிவு செய்து பாதுகாப்பான சமுதாய பதிவேட்டை உருவாக்குதல்."
                     : "Digitizing and unifying community records with verifiable QR-encoded member identity cards across all 38 districts."}
                 </p>
               </div>

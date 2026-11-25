@@ -16,7 +16,7 @@ const notoSansTamil = Noto_Sans_Tamil({
 });
 
 export const metadata: Metadata = {
-  title: "குரும்பர் சமூக அதிகாரப்பூர்வ தளம் | Kurumbar Community Digital Platform",
+  title: "குறும்பர் சமூக அதிகாரப்பூர்வ தளம் | Kurumbar Community Digital Platform",
   description:
     "Official centralized digital platform for the Kurumbar community (www.kurumbar.org) — Digital Member ID Card, Verified Registry, Community Announcements, Matrimony, Marketplace & Job Portal.",
   icons: {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   keywords: [
     "Kurumbar",
-    "குரும்பர்",
+    "குறும்பர்",
     "Kurumbar Community",
     "Kurumba Gounder",
     "Kurumbar Sangam",

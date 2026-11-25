@@ -37,7 +37,7 @@ export default function Hero({ lang }: HeroProps) {
               <span className="flex h-2.5 w-2.5 rounded-full bg-[#15803D] animate-pulse" />
               <span className="text-xs font-bold text-[#14532D] tracking-wide">
                 {isTa
-                  ? "தமிழ்நாடு குரும்பர் சமுதாய அதிகாரப்பூர்வ தளம் • www.kurumbar.org"
+                  ? "தமிழ்நாடு குறும்பர் சமுதாய அதிகாரப்பூர்வ தளம் • www.kurumbar.org"
                   : "Official Platform of the Kurumbar Community • www.kurumbar.org"}
               </span>
             </div>
@@ -48,7 +48,7 @@ export default function Hero({ lang }: HeroProps) {
                 <>
                   உலகெங்கும் வாழும்{" "}
                   <span className="text-[#15803D] underline decoration-[#FACC15] decoration-4 underline-offset-8">
-                    குரும்பர் சமூகத்தை
+                    குறும்பர் சமூகத்தை
                   </span>{" "}
                   ஒன்றிணைக்கும் டிஜிட்டல் தளம்
                 </>
@@ -153,7 +153,7 @@ export default function Hero({ lang }: HeroProps) {
                   <div className="flex items-center gap-3">
                     <div className="w-11 h-11 bg-white rounded-xl p-1 flex items-center justify-center shadow-xs">
                       <Image
-                        src="/brand/logo-concept-1-icon.png"
+                        src="/brand/logo.png"
                         alt="Kurumbar Seal"
                         width={36}
                         height={36}
@@ -165,7 +165,7 @@ export default function Hero({ lang }: HeroProps) {
                         KURUMBAR COMMUNITY PLATFORM
                       </h4>
                       <p className="text-[11px] text-[#FACC15] font-semibold">
-                        குரும்பர் சமுதாய டிஜிட்டல் அடையாள அட்டை
+                        குறும்பர் சமுதாய டிஜிட்டல் அடையாள அட்டை
                       </p>
                     </div>
                   </div>
@@ -180,7 +180,7 @@ export default function Hero({ lang }: HeroProps) {
                   <div className="col-span-5 text-center">
                     <div className="w-24 h-28 mx-auto bg-white/90 rounded-xl overflow-hidden border-2 border-[#FACC15] shadow-inner relative flex items-center justify-center">
                       <Image
-                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80"
+                        src="/images/member_avatar.png"
                         alt="Member Photo"
                         width={96}
                         height={112}

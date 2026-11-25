@@ -62,7 +62,7 @@ export default function ContactSection({ lang }: ContactProps) {
                     தலைமை அலுவலக முகவரி (Head Office)
                   </h4>
                   <p className="text-xs text-[#475569] mt-1.5 leading-relaxed">
-                    தமிழ்நாடு குரும்பர் முன்னேற்ற சங்கம் தலைமை அலுவலகம்,<br />
+                    தமிழ்நாடு குறும்பர் முன்னேற்ற சங்கம் தலைமை அலுவலகம்,<br />
                     14/2B, ராஜாஜி சாலை, புதிய பேருந்து நிலையம் எதிரில்,<br />
                     சேலம் - 636 004, தமிழ்நாடு.
                   </p>

@@ -115,7 +115,7 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
             <span>{isTa ? "சமுதாய உறுப்பினர் சேர்க்கை & டிஜிட்டல் அட்டை" : "Official Member Registration & Digital ID"}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-[#14532D] tracking-tight">
-            {isTa ? "குரும்பர் சமுதாய உறுப்பினர் பதிவு படிவம்" : "Kurumbar Community Registration Portal"}
+            {isTa ? "குறும்பர் சமுதாய உறுப்பினர் பதிவு படிவம்" : "Kurumbar Community Registration Portal"}
           </h2>
           <p className="text-base text-[#475569] mt-3">
             {isTa
@@ -547,7 +547,7 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                         className="mt-1 h-4 w-4 rounded-sm border-gray-300 text-[#15803D] focus:ring-[#15803D]"
                       />
                       <span className="text-xs text-[#1E293B] leading-relaxed">
-                        <strong>சமுதாய உறுதிமொழி:</strong> நான் வழங்கியுள்ள அனைத்து தகவல்களும் முற்றிலும் உண்மையானவை என உறுதி கூறுகிறேன். தமிழ்நாடு குரும்பர் சமுதாய விதிகளுக்கு உட்பட்டு நடக்க ஒப்புக்கொள்கிறேன்.
+                        <strong>சமுதாய உறுதிமொழி:</strong> நான் வழங்கியுள்ள அனைத்து தகவல்களும் முற்றிலும் உண்மையானவை என உறுதி கூறுகிறேன். தமிழ்நாடு குறும்பர் சமுதாய விதிகளுக்கு உட்பட்டு நடக்க ஒப்புக்கொள்கிறேன்.
                       </span>
                     </label>
                   </div>
@@ -565,7 +565,7 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                   <span>{isTa ? "உறுப்பினர் பதிவு வெற்றிகரமாக முடிந்தது!" : "Member ID Card Successfully Generated!"}</span>
                 </div>
                 <h3 className="text-2xl font-black text-[#14532D]">
-                  {isTa ? "உங்கள் அதிகாரப்பூர்வ குரும்பர் டிஜிட்டல் உறுப்பினர் அட்டை" : "Your Official Kurumbar Digital Member ID Card"}
+                  {isTa ? "உங்கள் அதிகாரப்பூர்வ குறும்பர் டிஜிட்டல் உறுப்பினர் அட்டை" : "Your Official Kurumbar Digital Member ID Card"}
                 </h3>
                 <p className="text-xs text-[#475569] mt-1">
                   {isTa ? "அட்டையின் முன் மற்றும் பின் பக்கங்களை பார்வையிட கீழே உள்ள சுழற்று பொத்தானை அழுத்தவும்." : "Click below to flip and inspect the front and back sides of the card."}
@@ -599,7 +599,7 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                               KURUMBAR COMMUNITY PLATFORM
                             </h4>
                             <p className="text-[10px] text-[#FACC15] font-bold">
-                              குரும்பர் சமுதாய டிஜிட்டல் அடையாள அட்டை
+                              குறும்பர் சமுதாய டிஜிட்டல் அடையாள அட்டை
                             </p>
                           </div>
                         </div>
@@ -729,7 +729,7 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                         </div>
                         <div className="text-right">
                           <span className="font-bold block text-white">மாநில செயலாளர்</span>
-                          <span className="text-[9px] text-[#FACC15]">தமிழ்நாடு குரும்பர் சங்கம்</span>
+                          <span className="text-[9px] text-[#FACC15]">தமிழ்நாடு குறும்பர் சங்கம்</span>
                         </div>
                       </div>
                     </div>

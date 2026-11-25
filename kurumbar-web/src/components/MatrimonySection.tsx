@@ -38,14 +38,14 @@ export default function MatrimonySection({ lang }: MatrimonyProps) {
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 bg-[#DCFCE7] text-[#14532D] text-xs font-bold px-3.5 py-1.5 rounded-full mb-3 border border-[#15803D]/20">
             <Heart className="w-4 h-4 text-[#15803D]" />
-            <span>{isTa ? "குரும்பர் திருமண தகவல் மையம்" : "Kurumbar Matrimony Service"}</span>
+            <span>{isTa ? "குறும்பர் திருமண தகவல் மையம்" : "Kurumbar Matrimony Service"}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-[#14532D] tracking-tight">
             {isTa ? "சரிபார்க்கப்பட்ட சமுதாய வரன்கள்" : "Verified Matrimonial Alliances"}
           </h2>
           <p className="text-base text-[#475569] mt-3">
             {isTa
-              ? "குரும்பர் சமுதாயத்திற்குள் பாரம்பரியம், குலம், நட்சத்திரப் பொருத்தம் மற்றும் கல்வித் தகுதியின் அடிப்படையில் பொருத்தமான வரன்களை தேர்வு செய்யுங்கள்."
+              ? "குறும்பர் சமுதாயத்திற்குள் பாரம்பரியம், குலம், நட்சத்திரப் பொருத்தம் மற்றும் கல்வித் தகுதியின் அடிப்படையில் பொருத்தமான வரன்களை தேர்வு செய்யுங்கள்."
               : "Explore verified bride and groom profiles within the Kurumbar community with complete privacy and zero agent fees."}
           </p>
 
