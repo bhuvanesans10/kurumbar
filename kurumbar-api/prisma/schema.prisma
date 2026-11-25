@@ -12,6 +12,56 @@ datasource db {
 // MODELS (keep all models in this upper section; never interleave with enums)
 // ============================================================================
 
+model Member {
+  id               String       @id @default(cuid())
+  membershipId     String       @unique
+  nameTa           String
+  nameEn           String
+  mobile           String       @unique
+  gender           Gender
+  dob              String?
+  bloodGroup       String?
+  fatherName       String?
+  maritalStatus    String?
+  childrenMale     Int?         @default(0)
+  childrenFemale   Int?         @default(0)
+  district         String
+  constituency     String?
+  address          String
+  pincode          String
+  kulam            String
+  kuladeivam       String?
+  education        String?
+  professionSector String?
+  jobTitle         String?
+  houseType        String?
+  landAvailable    String?
+  landDetails      String?
+  photoUrl         String?
+  aadhaarMasked    String?
+  status           MemberStatus @default(PENDING)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  @@index([mobile])
+  @@index([membershipId])
+  @@index([district])
+  @@index([status])
+  @@map("members")
+}
+
 // ============================================================================
 // ENUMS (keep all enums in this lower section, after all models)
 // ============================================================================
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MemberStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
