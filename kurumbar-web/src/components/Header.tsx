@@ -57,24 +57,29 @@ export default function Header({ lang, setLang }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#E2E8F0] shadow-xs">
       {/* Top micro-bar for official helpline & quick verification */}
-      <div className="bg-[#14532D] text-white text-xs py-1.5 px-4 sm:px-8 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <PhoneCall className="w-3.5 h-3.5 text-[#FACC15]" />
-          <span className="font-medium tracking-wide">{t.helpline}</span>
+      <div className="bg-[#14532D] text-white text-xs py-1.5 px-3 sm:px-6 lg:px-8 flex justify-between items-center gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <PhoneCall className="w-3.5 h-3.5 text-[#FACC15] shrink-0" />
+          <span className="font-medium tracking-wide truncate text-[11px] sm:text-xs">
+            <span className="hidden md:inline">{t.helpline}</span>
+            <span className="hidden sm:inline md:hidden">உதவி எண்: +91 94432 12345 | support@kurumbar.org</span>
+            <span className="sm:hidden">+91 94432 12345</span>
+          </span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
           <Link
             href="#verify"
-            className="flex items-center gap-1.5 text-white/90 hover:text-[#FACC15] transition-colors font-medium"
+            className="hidden xs:flex items-center gap-1.5 text-white/90 hover:text-[#FACC15] transition-colors font-medium text-[11px] sm:text-xs"
           >
             <ShieldCheck className="w-3.5 h-3.5 text-[#FACC15]" />
             <span>{t.verifyId}</span>
           </Link>
-          <div className="flex items-center gap-1 bg-[#15803D] rounded-full px-2 py-0.5 border border-white/20">
+          <div className="flex items-center gap-1 bg-[#15803D] hover:bg-[#166534] rounded-full px-2 py-0.5 border border-white/20 transition-colors shadow-2xs">
             <Globe2 className="w-3 h-3 text-[#FACC15]" />
             <button
               onClick={() => setLang(lang === "ta" ? "en" : "ta")}
-              className="font-bold text-[11px] text-white hover:text-[#FACC15] transition-colors"
+              className="font-bold text-[11px] text-white hover:text-[#FACC15] transition-colors cursor-pointer"
+              title="Click to toggle Tamil / English"
             >
               {lang === "ta" ? "English" : "தமிழ்"}
             </button>
@@ -83,117 +88,129 @@ export default function Header({ lang, setLang }: HeaderProps) {
       </div>
 
       {/* Main navigation */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-18 sm:h-20 gap-2">
           {/* Logo & Brand Identity */}
-          <Link href="/" className="flex items-center gap-3.5 group">
-            <div className="relative w-12 h-12 rounded-xl overflow-hidden shadow-xs border border-[#15803D]/20 bg-[#FAFAF5] p-1 flex items-center justify-center transition-transform group-hover:scale-105">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+            <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-xs border border-[#15803D]/20 bg-[#FAFAF5] p-1 flex items-center justify-center transition-transform group-hover:scale-105 shrink-0">
               <Image
                 src="/brand/logo.png"
                 alt="Kurumbar Logo"
-                width={44}
-                height={44}
+                width={40}
+                height={40}
                 className="object-contain"
                 priority
               />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-black text-[#14532D] tracking-tight">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-xl sm:text-2xl font-black text-[#14532D] tracking-tight">
                   KURUMBAR
                 </span>
-                <span className="bg-[#FACC15] text-[#14532D] text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                <span className="bg-[#FACC15] text-[#14532D] text-[10px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs shrink-0">
                   குறும்பர்
                 </span>
               </div>
-              <p className="text-[11px] text-[#475569] font-medium tracking-wide">
+              <p className="hidden 2xl:block text-[11px] text-[#475569] font-medium tracking-wide">
                 அதிகாரப்பூர்வ சமூக இணையதளம் • www.kurumbar.org
+              </p>
+              <p className="hidden sm:block 2xl:hidden text-[10px] text-[#475569] font-medium tracking-wide truncate max-w-[200px]">
+                அதிகாரப்பூர்வ தளம்
               </p>
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+          {/* Desktop Navigation Links (Visible on xl: 1200px+) */}
+          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1.5 min-w-0">
             <Link
               href="#home"
-              className="px-3 py-2 text-sm font-semibold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors"
+              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.home}
             </Link>
             <Link
               href="#about"
-              className="px-3 py-2 text-sm font-semibold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors"
+              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.about}
             </Link>
             <Link
               href="#register"
-              className="px-3 py-2 text-sm font-semibold text-[#15803D] hover:bg-[#DCFCE7]/60 rounded-lg transition-colors flex items-center gap-1.5"
+              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#15803D] hover:bg-[#DCFCE7]/60 rounded-lg transition-colors flex items-center gap-1 whitespace-nowrap"
             >
-              <UserCheck className="w-4 h-4 text-[#15803D]" />
+              <UserCheck className="w-3.5 h-3.5 text-[#15803D]" />
               <span>{t.register}</span>
             </Link>
             <Link
               href="#matrimony"
-              className="px-3 py-2 text-sm font-semibold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors"
+              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.matrimony}
             </Link>
             <Link
               href="#marketplace"
-              className="px-3 py-2 text-sm font-semibold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors"
+              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.marketplace}
             </Link>
             <Link
               href="#jobs"
-              className="px-3 py-2 text-sm font-semibold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors"
+              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.jobs}
             </Link>
             <Link
               href="#news"
-              className="px-3 py-2 text-sm font-semibold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors"
+              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.news}
             </Link>
             <Link
               href="#gallery"
-              className="px-3 py-2 text-sm font-semibold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors"
+              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.gallery}
             </Link>
             <Link
               href="#contact"
-              className="px-3 py-2 text-sm font-semibold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors"
+              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.contact}
             </Link>
           </nav>
 
-          {/* Action Button */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Action Button & Admin Portal (Visible on xl: 1200px+) */}
+          <div className="hidden xl:flex items-center gap-2 2xl:gap-3 shrink-0">
             <Link
               href="/admin"
-              className="inline-flex items-center gap-1.5 bg-[#0D3B2E] hover:bg-[#14532D] text-[#FACC15] border border-[#FACC15]/30 px-3.5 py-2.5 rounded-xl font-bold text-xs shadow-xs transition-all hover:scale-105"
+              className="inline-flex items-center gap-1.5 bg-[#0D3B2E] hover:bg-[#14532D] text-[#FACC15] border border-[#FACC15]/30 px-2.5 2xl:px-3.5 py-2 rounded-xl font-bold text-xs shadow-xs transition-all hover:scale-105 whitespace-nowrap"
             >
               <ShieldCheck className="w-4 h-4 text-[#FACC15]" />
-              <span>{lang === "ta" ? "நிர்வாக போர்டல்" : "Admin Portal"}</span>
+              <span className="hidden 2xl:inline">{lang === "ta" ? "நிர்வாக போர்டல்" : "Admin Portal"}</span>
+              <span className="2xl:hidden">{lang === "ta" ? "நிர்வாகம்" : "Admin"}</span>
             </Link>
             <Link
               href="#register"
-              className="inline-flex items-center gap-2 bg-[#15803D] hover:bg-[#14532D] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-1.5 2xl:gap-2 bg-[#15803D] hover:bg-[#14532D] text-white px-3.5 2xl:px-5 py-2 2xl:py-2.5 rounded-xl font-bold text-xs 2xl:text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 whitespace-nowrap"
             >
               <UserCheck className="w-4 h-4 text-[#FACC15]" />
               <span>{t.ctaRegister}</span>
             </Link>
           </div>
 
-          {/* Mobile hamburger button */}
-          <div className="lg:hidden flex items-center gap-2">
+          {/* Mobile / Tablet Controls (Visible on screens < xl) */}
+          <div className="xl:hidden flex items-center gap-2">
+            <Link
+              href="/admin"
+              className="inline-flex items-center gap-1 bg-[#0D3B2E] text-[#FACC15] border border-[#FACC15]/30 px-2.5 py-1.5 rounded-lg font-bold text-xs shadow-xs"
+              title="Admin Portal"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-[#FACC15]" />
+              <span>{lang === "ta" ? "நிர்வாகம்" : "Admin"}</span>
+            </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl text-[#1E293B] hover:bg-[#FAFAF5] border border-[#E2E8F0] focus:outline-hidden"
+              className="p-2 rounded-xl text-[#1E293B] hover:bg-[#FAFAF5] border border-[#E2E8F0] focus:outline-hidden cursor-pointer"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
@@ -208,88 +225,117 @@ export default function Header({ lang, setLang }: HeaderProps) {
 
       {/* Mobile navigation drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#E2E8F0] bg-white px-4 pt-3 pb-6 shadow-xl animate-in slide-in-from-top">
-          <div className="flex flex-col space-y-1.5">
+        <div className="xl:hidden border-t border-[#E2E8F0] bg-white px-4 pt-3 pb-6 shadow-xl animate-in slide-in-from-top">
+          {/* Quick Language Switcher Bar inside Drawer */}
+          <div className="flex items-center justify-between p-3 rounded-2xl bg-[#DCFCE7]/40 border border-[#15803D]/20 mb-3">
+            <span className="text-xs font-bold text-[#14532D] flex items-center gap-1.5">
+              <Globe2 className="w-4 h-4 text-[#15803D]" />
+              <span>{lang === "ta" ? "மொழியை மாற்றுக (Language)" : "Change Language"}</span>
+            </span>
+            <div className="flex items-center gap-1 bg-white p-0.5 rounded-xl border border-[#CBD5E1] shadow-2xs">
+              <button
+                type="button"
+                onClick={() => setLang("ta")}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                  lang === "ta" ? "bg-[#15803D] text-white shadow-xs" : "text-[#475569] hover:bg-gray-100"
+                }`}
+              >
+                தமிழ்
+              </button>
+              <button
+                type="button"
+                onClick={() => setLang("en")}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                  lang === "en" ? "bg-[#15803D] text-white shadow-xs" : "text-[#475569] hover:bg-gray-100"
+                }`}
+              >
+                English
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col space-y-1">
             <Link
               href="#home"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-lg text-base font-semibold text-[#1E293B] hover:bg-[#FAFAF5]"
+              className="px-3 py-2 rounded-lg text-sm font-bold text-[#1E293B] hover:bg-[#FAFAF5]"
             >
               {t.home}
             </Link>
             <Link
               href="#about"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-lg text-base font-semibold text-[#1E293B] hover:bg-[#FAFAF5]"
+              className="px-3 py-2 rounded-lg text-sm font-bold text-[#1E293B] hover:bg-[#FAFAF5]"
             >
               {t.about}
             </Link>
             <Link
               href="#register"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-lg text-base font-semibold text-[#15803D] bg-[#DCFCE7]/60 flex items-center justify-between"
+              className="px-3 py-2 rounded-lg text-sm font-bold text-[#15803D] bg-[#DCFCE7]/60 flex items-center justify-between"
             >
               <span>{t.register}</span>
-              <span className="text-xs font-bold bg-[#15803D] text-white px-2 py-0.5 rounded-full">
+              <span className="text-[10px] font-black bg-[#15803D] text-white px-2 py-0.5 rounded-full">
                 ID அட்டை
               </span>
             </Link>
             <Link
               href="#matrimony"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-lg text-base font-semibold text-[#1E293B] hover:bg-[#FAFAF5]"
+              className="px-3 py-2 rounded-lg text-sm font-bold text-[#1E293B] hover:bg-[#FAFAF5]"
             >
               {t.matrimony}
             </Link>
             <Link
               href="#marketplace"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-lg text-base font-semibold text-[#1E293B] hover:bg-[#FAFAF5]"
+              className="px-3 py-2 rounded-lg text-sm font-bold text-[#1E293B] hover:bg-[#FAFAF5]"
             >
               {t.marketplace}
             </Link>
             <Link
               href="#jobs"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-lg text-base font-semibold text-[#1E293B] hover:bg-[#FAFAF5]"
+              className="px-3 py-2 rounded-lg text-sm font-bold text-[#1E293B] hover:bg-[#FAFAF5]"
             >
               {t.jobs}
             </Link>
             <Link
               href="#news"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-lg text-base font-semibold text-[#1E293B] hover:bg-[#FAFAF5]"
+              className="px-3 py-2 rounded-lg text-sm font-bold text-[#1E293B] hover:bg-[#FAFAF5]"
             >
               {t.news}
             </Link>
             <Link
               href="#gallery"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-lg text-base font-semibold text-[#1E293B] hover:bg-[#FAFAF5]"
+              className="px-3 py-2 rounded-lg text-sm font-bold text-[#1E293B] hover:bg-[#FAFAF5]"
             >
               {t.gallery}
             </Link>
             <Link
               href="#verify"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-lg text-base font-semibold text-[#1E293B] hover:bg-[#FAFAF5]"
+              className="px-3 py-2 rounded-lg text-sm font-bold text-[#1E293B] hover:bg-[#FAFAF5]"
             >
               {t.verifyId}
             </Link>
             <Link
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-lg text-base font-semibold text-[#1E293B] hover:bg-[#FAFAF5]"
+              className="px-3 py-2 rounded-lg text-sm font-bold text-[#1E293B] hover:bg-[#FAFAF5]"
             >
               {t.contact}
             </Link>
+
             <div className="pt-3 flex flex-col gap-2">
               <Link
                 href="#register"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full inline-flex items-center justify-center gap-2 bg-[#15803D] text-white px-5 py-3 rounded-xl font-bold text-center shadow-md"
+                className="w-full inline-flex items-center justify-center gap-2 bg-[#15803D] text-white px-5 py-2.5 rounded-xl font-bold text-center text-sm shadow-md"
               >
-                <UserCheck className="w-5 h-5 text-[#FACC15]" />
+                <UserCheck className="w-4 h-4 text-[#FACC15]" />
                 <span>{t.ctaRegister}</span>
               </Link>
               <Link
@@ -298,7 +344,7 @@ export default function Header({ lang, setLang }: HeaderProps) {
                 className="w-full inline-flex items-center justify-center gap-2 bg-[#0D3B2E] text-[#FACC15] border border-[#FACC15]/30 px-5 py-2.5 rounded-xl font-bold text-center text-sm shadow-xs"
               >
                 <ShieldCheck className="w-4 h-4 text-[#FACC15]" />
-                <span>{lang === "ta" ? "நிர்வாக போர்டல் (Admin)" : "Admin Portal"}</span>
+                <span>{lang === "ta" ? "நிர்வாக போர்டல் (Admin Portal)" : "Admin Portal"}</span>
               </Link>
             </div>
           </div>

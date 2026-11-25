@@ -478,10 +478,10 @@ export default function App() {
       </header>
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 flex-1 w-full space-y-6 sm:space-y-8">
         {/* Metric Cards Banner */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E2E8F0] shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-[#64748B] uppercase">மொத்த உறுப்பினர்கள்</span>
               <div className="w-8 h-8 rounded-xl bg-[#DCFCE7] text-[#15803D] flex items-center justify-center">
@@ -494,7 +494,7 @@ export default function App() {
             </span>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-xs">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E2E8F0] shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-[#64748B] uppercase">சரிபார்ப்பு நிலுவை</span>
               <div className="w-8 h-8 rounded-xl bg-[#FEF9C3] text-[#854D0E] flex items-center justify-center">
@@ -509,7 +509,7 @@ export default function App() {
             </span>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-xs">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E2E8F0] shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-[#64748B] uppercase">வரன் பதிவுகள்</span>
               <div className="w-8 h-8 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center">
@@ -522,7 +522,7 @@ export default function App() {
             </span>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-xs">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E2E8F0] shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-[#64748B] uppercase">சந்தை பொருட்கள்</span>
               <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
@@ -536,13 +536,13 @@ export default function App() {
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="flex flex-wrap gap-2 border-b border-[#E2E8F0] pb-2">
+        {/* Navigation Tabs (Smooth horizontal scrolling on mobile) */}
+        <div className="flex gap-2 overflow-x-auto pb-2 border-b border-[#E2E8F0] no-scrollbar sm:flex-wrap">
           {[
-            { id: 'members', label: 'உறுப்பினர் சரிபார்ப்பு வரிசை (KYC Queue)', icon: UserCheck, count: applications.filter(a => a.status === 'PENDING').length },
-            { id: 'matrimony', label: 'வரன் அமைப்பாளர் (Matrimony Moderation)', icon: Heart, count: 4 },
-            { id: 'marketplace', label: 'சந்தை & கைவினை (Marketplace)', icon: Store, count: 2 },
-            { id: 'broadcast', label: 'அறிவிப்பு பலகை (Welfare Announcements)', icon: Bell, count: 3 },
+            { id: 'members', label: 'உறுப்பினர் சரிபார்ப்பு (KYC)', icon: UserCheck, count: applications.filter(a => a.status === 'PENDING').length },
+            { id: 'matrimony', label: 'வரன் அமைப்பாளர் (Matrimony)', icon: Heart, count: 4 },
+            { id: 'marketplace', label: 'சந்தை & கைவினை (Market)', icon: Store, count: 2 },
+            { id: 'broadcast', label: 'அறிவிப்பு பலகை (Announcements)', icon: Bell, count: 3 },
           ].map((tab) => {
             const Icon = tab.icon
             const active = activeTab === tab.id
@@ -551,14 +551,14 @@ export default function App() {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
                   active
                     ? 'bg-[#14532D] text-white shadow-sm'
                     : 'bg-white text-[#475569] hover:bg-[#F1F5F9] border border-[#E2E8F0]'
                 }`}
               >
                 <Icon className={`w-4 h-4 ${active ? 'text-[#FACC15]' : 'text-[#64748B]'}`} />
-                <span>{tab.label}</span>
+                <span className="whitespace-nowrap">{tab.label}</span>
                 {tab.count > 0 && (
                   <span
                     className={`px-1.5 py-0.5 rounded-full text-[10px] font-black ${
@@ -577,8 +577,8 @@ export default function App() {
         {activeTab === 'members' && (
           <div className="space-y-6">
             {/* Filters Bar */}
-            <div className="bg-white p-4 rounded-2xl border border-[#E2E8F0] shadow-xs flex flex-wrap items-center justify-between gap-4">
-              <div className="flex flex-1 items-center gap-3 min-w-[280px]">
+            <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#E2E8F0] shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4">
+              <div className="flex flex-1 items-center gap-3 min-w-0">
                 <div className="relative flex-1">
                   <Search className="w-4 h-4 text-[#94A3B8] absolute left-3 top-2.5" />
                   <input
@@ -591,7 +591,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                 <select
                   value={districtFilter}
                   onChange={(e) => setDistrictFilter(e.target.value)}
@@ -621,7 +621,7 @@ export default function App() {
             {/* Applications Table */}
             <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-xs overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+                <table className="w-full text-left text-xs min-w-[700px]">
                   <thead className="bg-[#F8FAFC] border-b border-[#E2E8F0] text-[#475569] font-bold uppercase tracking-wider">
                     <tr>
                       <th className="px-6 py-4">உறுப்பினர் விவரம் (Member)</th>
