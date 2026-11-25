@@ -19,13 +19,34 @@ interface IdVerificationProps {
 
 export default function IdVerificationWidget({ lang }: IdVerificationProps) {
   const isTa = lang === "ta";
-  const [searchId, setSearchId] = useState<string>("TN01M0000001");
+  const [searchId, setSearchId] = useState<string>("TN04M0001042");
+  const [searchError, setSearchError] = useState<string>("");
   const [searched, setSearched] = useState<boolean>(true);
 
-  const isSpecimen = searchId.trim().toUpperCase() === "TN01M0000001";
+  const cleanId = searchId.trim().toUpperCase();
+  const isSpecimen = cleanId === "TN04M0001042" || cleanId === "TN01M0000001";
 
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!cleanId) {
+      setSearchError(
+        isTa
+          ? "உறுப்பினர் அடையாள எண்ணை உள்ளிடவும் (எ.கா: TN04M0001042)"
+          : "Please enter a Member ID number (e.g. TN04M0001042)"
+      );
+      setSearched(false);
+      return;
+    }
+    if (cleanId.length < 5) {
+      setSearchError(
+        isTa
+          ? "சரியான அடையாள அட்டை எண்ணை உள்ளிடவும் (குறைந்தது 5 எழுத்துக்கள்)"
+          : "Please enter a valid Member ID (at least 5 characters)"
+      );
+      setSearched(false);
+      return;
+    }
+    setSearchError("");
     setSearched(true);
   };
 

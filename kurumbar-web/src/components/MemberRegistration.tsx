@@ -33,19 +33,21 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
 
   // Form State
   const [step, setStep] = useState<number>(1);
-  const [otpSent, setOtpSent] = useState<boolean>(false);
-  const [otpVerified, setOtpVerified] = useState<boolean>(false);
+  const [otpSent, setOtpSent] = useState<boolean>(true);
+  const [otpVerified, setOtpVerified] = useState<boolean>(true);
   const [otpInput, setOtpInput] = useState<string>("8942");
+  const [declarationAgreed, setDeclarationAgreed] = useState<boolean>(true);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Form Data
   const [formData, setFormData] = useState({
-    nameEn: "Karthikeyan R",
-    nameTa: "ஆர். கார்த்திகேயன்",
-    mobile: "9842154321",
+    nameEn: "S. Bhuvanesan",
+    nameTa: "சு. புவனேசன்",
+    mobile: "9443212345",
     gender: "MALE" as "MALE" | "FEMALE",
     dob: "1998-08-14",
     bloodGroup: "O+",
-    fatherName: "K. Rangasamy",
+    fatherName: "K. Rangasamy (ரங்கசாமி)",
     maritalStatus: "Unmarried",
     childrenMale: "0",
     childrenFemale: "0",
@@ -61,12 +63,107 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
     houseType: "OWN",
     landAvailable: "YES",
     landDetails: "3.5 ஏக்கர் விவசாய நிலம் (சொந்த கிணறு & பாசனம்)",
-    photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
+    photoUrl: "/images/member_avatar.png",
   });
 
   // Card flip state in preview
   const [showCardBack, setShowCardBack] = useState<boolean>(false);
   const [isGenerated, setIsGenerated] = useState<boolean>(false);
+
+  // Clear specific field error on change
+  const updateField = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  // Step-level form validation
+  const validateStep = (currentStep: number): boolean => {
+    const nextErrors: Record<string, string> = {};
+
+    if (currentStep === 1) {
+      if (!formData.nameEn.trim() || formData.nameEn.trim().length < 2) {
+        nextErrors.nameEn = isTa
+          ? "ஆங்கிலத்தில் சரியான பெயரை உள்ளிடவும் (குறைந்தது 2 எழுத்துக்கள்)"
+          : "Please enter a valid English name (min 2 characters)";
+      }
+      if (!formData.nameTa.trim() || formData.nameTa.trim().length < 2) {
+        nextErrors.nameTa = isTa
+          ? "தமிழில் சரியான பெயரை உள்ளிடவும் (குறைந்தது 2 எழுத்துக்கள்)"
+          : "Please enter a valid Tamil name (min 2 characters)";
+      }
+      const mobileRegex = /^[6-9]\d{9}$/;
+      if (!mobileRegex.test(formData.mobile.trim())) {
+        nextErrors.mobile = isTa
+          ? "சரியான 10 இலக்க இந்திய கைபேசி எண்ணை உள்ளிடவும் (6, 7, 8, 9 இல் துவங்க வேண்டும்)"
+          : "Please enter a valid 10-digit Indian mobile number";
+      } else if (!otpVerified) {
+        nextErrors.otp = isTa
+          ? "தயவுசெய்து OTP சரிபார்க்கவும்"
+          : "Please verify mobile number with OTP";
+      }
+      if (!formData.dob) {
+        nextErrors.dob = isTa
+          ? "பிறந்த தேதியை உள்ளிடவும்"
+          : "Please select Date of Birth";
+      } else {
+        const birthYear = new Date(formData.dob).getFullYear();
+        const currentYear = new Date().getFullYear();
+        if (currentYear - birthYear < 18) {
+          nextErrors.dob = isTa
+            ? "உறுப்பினர் வயது குறைந்தது 18 அல்லது அதற்கு மேல் இருக்க வேண்டும்"
+            : "Member age must be 18 years or older";
+        }
+      }
+    } else if (currentStep === 2) {
+      if (!formData.fatherName.trim() || formData.fatherName.trim().length < 2) {
+        nextErrors.fatherName = isTa
+          ? "தந்தை / கணவர் பெயரை உள்ளிடவும்"
+          : "Please enter Father's / Husband's name";
+      }
+      if (!formData.address.trim() || formData.address.trim().length < 8) {
+        nextErrors.address = isTa
+          ? "முழு வீட்டு முகவரியை உள்ளிடவும் (குறைந்தது 8 எழுத்துக்கள்)"
+          : "Please enter full residential address (min 8 characters)";
+      }
+      const pincodeRegex = /^\d{6}$/;
+      if (!pincodeRegex.test(formData.pincode.trim())) {
+        nextErrors.pincode = isTa
+          ? "சரியான 6 இலக்க அஞ்சல் குறியீட்டு எண்ணை (PIN code) உள்ளிடவும்"
+          : "Please enter a valid 6-digit postal PIN code";
+      }
+    } else if (currentStep === 3) {
+      if (!formData.kuladeivam.trim() || formData.kuladeivam.trim().length < 2) {
+        nextErrors.kuladeivam = isTa
+          ? "குலதெய்வம் திருக்கோவில் பெயரை உள்ளிடவும்"
+          : "Please enter Kuladeivam temple name";
+      }
+      if (!formData.education.trim()) {
+        nextErrors.education = isTa
+          ? "கல்வித் தகுதியை உள்ளிடவும்"
+          : "Please enter highest education";
+      }
+      if (!formData.jobTitle.trim()) {
+        nextErrors.jobTitle = isTa
+          ? "பதவி அல்லது தொழிலை உள்ளிடவும்"
+          : "Please enter job title or designation";
+      }
+    } else if (currentStep === 4) {
+      if (!declarationAgreed) {
+        nextErrors.declaration = isTa
+          ? "தொடர சமுதாய உறுதிமொழியை ஏற்க வேண்டும்"
+          : "You must agree to the community bylaws to proceed";
+      }
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
 
   // Calculate Member ID format: TN + District Code + M/W + 7 Digits (e.g. TN01M0000001)
   const getMemberId = () => {
@@ -87,6 +184,9 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
   };
 
   const handleNext = () => {
+    if (!validateStep(step)) {
+      return;
+    }
     if (step < 4) {
       setStep(step + 1);
     } else {
@@ -180,10 +280,17 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                   <input
                     type="text"
                     value={formData.nameEn}
-                    onChange={(e) => setFormData({ ...formData, nameEn: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] focus:ring-2 focus:ring-[#15803D]/20 outline-hidden font-medium text-sm"
-                    placeholder="e.g. Karthikeyan R"
+                    onChange={(e) => updateField("nameEn", e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm ${
+                      errors.nameEn ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
+                    placeholder="e.g. S. Bhuvanesan"
                   />
+                  {errors.nameEn && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.nameEn}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -193,10 +300,17 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                   <input
                     type="text"
                     value={formData.nameTa}
-                    onChange={(e) => setFormData({ ...formData, nameTa: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] focus:ring-2 focus:ring-[#15803D]/20 outline-hidden font-medium text-sm"
-                    placeholder="எ.கா. ஆர். கார்த்திகேயன்"
+                    onChange={(e) => updateField("nameTa", e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm ${
+                      errors.nameTa ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
+                    placeholder="எ.கா. சு. புவனேசன்"
                   />
+                  {errors.nameTa && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.nameTa}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -210,9 +324,11 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                         type="tel"
                         maxLength={10}
                         value={formData.mobile}
-                        onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
-                        className="w-full pl-12 pr-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm"
-                        placeholder="9842154321"
+                        onChange={(e) => updateField("mobile", e.target.value)}
+                        className={`w-full pl-12 pr-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm ${
+                          errors.mobile ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                        }`}
+                        placeholder="9443212345"
                       />
                     </div>
                     {!otpVerified ? (
@@ -232,6 +348,16 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                       </span>
                     )}
                   </div>
+                  {errors.mobile && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.mobile}
+                    </p>
+                  )}
+                  {errors.otp && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.otp}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -271,9 +397,16 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                   <input
                     type="date"
                     value={formData.dob}
-                    onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm"
+                    onChange={(e) => updateField("dob", e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm ${
+                      errors.dob ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
                   />
+                  {errors.dob && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.dob}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -316,10 +449,17 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                   <input
                     type="text"
                     value={formData.fatherName}
-                    onChange={(e) => setFormData({ ...formData, fatherName: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm"
+                    onChange={(e) => updateField("fatherName", e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm ${
+                      errors.fatherName ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
                     placeholder="e.g. K. Rangasamy"
                   />
+                  {errors.fatherName && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.fatherName}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -372,17 +512,58 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                   </select>
                 </div>
 
+                <div>
+                  <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1.5">
+                    அஞ்சல் குறியீட்டு எண் (PIN Code - 6 Digits) *
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={formData.pincode}
+                    onChange={(e) => updateField("pincode", e.target.value.replace(/\D/g, ""))}
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm ${
+                      errors.pincode ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
+                    placeholder="636004"
+                  />
+                  {errors.pincode && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.pincode}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1.5">
+                    வீட்டு வகை & நில விவரம் (House & Land)
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.landDetails}
+                    onChange={(e) => setFormData({ ...formData, landDetails: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm"
+                    placeholder="3.5 ஏக்கர் விவசாய நிலம் (சொந்த கிணறு & பாசனம்)"
+                  />
+                </div>
+
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1.5">
-                    முழு வீட்டு முகவரி (Full Residential Address with Pincode) *
+                    முழு வீட்டு முகவரி (Full Residential Address) *
                   </label>
                   <textarea
                     rows={3}
                     value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm"
+                    onChange={(e) => updateField("address", e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm ${
+                      errors.address ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
                     placeholder="கதவு எண், தெரு பெயர், கிராமம்/நகரம், அஞ்சல் குறியீட்டு எண்"
                   />
+                  {errors.address && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.address}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -425,10 +606,17 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                   <input
                     type="text"
                     value={formData.kuladeivam}
-                    onChange={(e) => setFormData({ ...formData, kuladeivam: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm"
+                    onChange={(e) => updateField("kuladeivam", e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm ${
+                      errors.kuladeivam ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
                     placeholder="எ.கா. ஸ்ரீ பீரேஸ்வரர் கோவில், ஊர் பெயர்"
                   />
+                  {errors.kuladeivam && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.kuladeivam}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -438,10 +626,17 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                   <input
                     type="text"
                     value={formData.education}
-                    onChange={(e) => setFormData({ ...formData, education: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm"
+                    onChange={(e) => updateField("education", e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm ${
+                      errors.education ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
                     placeholder="e.g. B.E, B.Sc, Diploma, 12th Std"
                   />
+                  {errors.education && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.education}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -467,10 +662,17 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                   <input
                     type="text"
                     value={formData.jobTitle}
-                    onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm"
+                    onChange={(e) => updateField("jobTitle", e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm ${
+                      errors.jobTitle ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
                     placeholder="e.g. Senior Software Engineer"
                   />
+                  {errors.jobTitle && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.jobTitle}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -539,17 +741,32 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                     />
                   </div>
 
-                  <div className="bg-[#FEF9C3] p-4 rounded-xl border border-[#FACC15]">
+                  <div className={`p-4 rounded-xl border ${errors.declaration ? "bg-red-50 border-red-400" : "bg-[#FEF9C3] border-[#FACC15]"}`}>
                     <label className="flex items-start gap-3 cursor-pointer">
                       <input
                         type="checkbox"
-                        defaultChecked
+                        checked={declarationAgreed}
+                        onChange={(e) => {
+                          setDeclarationAgreed(e.target.checked);
+                          if (errors.declaration) {
+                            setErrors((prev) => {
+                              const next = { ...prev };
+                              delete next.declaration;
+                              return next;
+                            });
+                          }
+                        }}
                         className="mt-1 h-4 w-4 rounded-sm border-gray-300 text-[#15803D] focus:ring-[#15803D]"
                       />
                       <span className="text-xs text-[#1E293B] leading-relaxed">
                         <strong>சமுதாய உறுதிமொழி:</strong> நான் வழங்கியுள்ள அனைத்து தகவல்களும் முற்றிலும் உண்மையானவை என உறுதி கூறுகிறேன். தமிழ்நாடு குறும்பர் சமுதாய விதிகளுக்கு உட்பட்டு நடக்க ஒப்புக்கொள்கிறேன்.
                       </span>
                     </label>
+                    {errors.declaration && (
+                      <p className="text-[11px] font-bold text-red-600 mt-2 flex items-center gap-1">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.declaration}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

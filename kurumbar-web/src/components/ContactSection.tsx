@@ -18,6 +18,7 @@ interface ContactProps {
 export default function ContactSection({ lang }: ContactProps) {
   const isTa = lang === "ta";
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [contactData, setContactData] = useState({
     name: "",
     mobile: "",
@@ -26,8 +27,46 @@ export default function ContactSection({ lang }: ContactProps) {
     message: "",
   });
 
+  const updateContactField = (field: string, value: string) => {
+    setContactData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const nextErrors: Record<string, string> = {};
+
+    if (!contactData.name.trim() || contactData.name.trim().length < 2) {
+      nextErrors.name = isTa
+        ? "தங்கள் பெயரை சரியாக உள்ளிடவும் (குறைந்தது 2 எழுத்துக்கள்)"
+        : "Please enter your name (min 2 characters)";
+    }
+
+    const mobileRegex = /^[6-9]\d{9}$/;
+    if (!mobileRegex.test(contactData.mobile.trim())) {
+      nextErrors.mobile = isTa
+        ? "சரியான 10 இலக்க இந்திய கைபேசி எண்ணை உள்ளிடவும் (6, 7, 8, 9 இல் துவங்க வேண்டும்)"
+        : "Please enter a valid 10-digit Indian mobile number";
+    }
+
+    if (!contactData.message.trim() || contactData.message.trim().length < 8) {
+      nextErrors.message = isTa
+        ? "செய்தியை விரிவாக உள்ளிடவும் (குறைந்தது 8 எழுத்துக்கள்)"
+        : "Please enter your query message (min 8 characters)";
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      return;
+    }
+
+    setErrors({});
     setSubmitted(true);
   };
 
@@ -155,12 +194,16 @@ export default function ContactSection({ lang }: ContactProps) {
                       </label>
                       <input
                         type="text"
-                        required
                         value={contactData.name}
-                        onChange={(e) => setContactData({ ...contactData, name: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden text-sm"
-                        placeholder="எ.கா. சுப்பிரமணி"
+                        onChange={(e) => updateContactField("name", e.target.value)}
+                        className={`w-full px-4 py-2.5 rounded-xl border outline-hidden text-sm ${
+                          errors.name ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                        }`}
+                        placeholder="எ.கா. சு. புவனேசன்"
                       />
+                      {errors.name && (
+                        <p className="text-[11px] font-bold text-red-600 mt-1">{errors.name}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1">
@@ -168,13 +211,17 @@ export default function ContactSection({ lang }: ContactProps) {
                       </label>
                       <input
                         type="tel"
-                        required
                         maxLength={10}
                         value={contactData.mobile}
-                        onChange={(e) => setContactData({ ...contactData, mobile: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden text-sm"
-                        placeholder="9876543210"
+                        onChange={(e) => updateContactField("mobile", e.target.value)}
+                        className={`w-full px-4 py-2.5 rounded-xl border outline-hidden text-sm ${
+                          errors.mobile ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                        }`}
+                        placeholder="9443212345"
                       />
+                      {errors.mobile && (
+                        <p className="text-[11px] font-bold text-red-600 mt-1">{errors.mobile}</p>
+                      )}
                     </div>
                   </div>
 
@@ -186,7 +233,7 @@ export default function ContactSection({ lang }: ContactProps) {
                       <input
                         type="text"
                         value={contactData.district}
-                        onChange={(e) => setContactData({ ...contactData, district: e.target.value })}
+                        onChange={(e) => updateContactField("district", e.target.value)}
                         className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden text-sm"
                         placeholder="e.g. Salem, Coimbatore, Erode"
                       />
@@ -197,7 +244,7 @@ export default function ContactSection({ lang }: ContactProps) {
                       </label>
                       <select
                         value={contactData.subject}
-                        onChange={(e) => setContactData({ ...contactData, subject: e.target.value })}
+                        onChange={(e) => updateContactField("subject", e.target.value)}
                         className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden text-sm bg-white"
                       >
                         <option value="Member Registration">உறுப்பினர் சேர்க்கை & அட்டை</option>
@@ -216,12 +263,16 @@ export default function ContactSection({ lang }: ContactProps) {
                     </label>
                     <textarea
                       rows={4}
-                      required
                       value={contactData.message}
-                      onChange={(e) => setContactData({ ...contactData, message: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden text-sm"
+                      onChange={(e) => updateContactField("message", e.target.value)}
+                      className={`w-full px-4 py-2.5 rounded-xl border outline-hidden text-sm ${
+                        errors.message ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                      }`}
                       placeholder="தங்களுக்கு தேவையான தகவலை இங்கே சுருக்கமாக குறிப்பிடவும்..."
                     />
+                    {errors.message && (
+                      <p className="text-[11px] font-bold text-red-600 mt-1">{errors.message}</p>
+                    )}
                   </div>
 
                   <button

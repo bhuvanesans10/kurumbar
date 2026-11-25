@@ -28,7 +28,7 @@ export default function Footer({ lang }: FooterProps) {
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-white rounded-2xl p-1.5 flex items-center justify-center shadow-md">
                 <Image
-                  src="/brand/logo-concept-1-icon.png"
+                  src="/brand/logo.png"
                   alt="Kurumbar Logo"
                   width={40}
                   height={40}
@@ -90,6 +90,18 @@ export default function Footer({ lang }: FooterProps) {
                 <Link href="#news" className="hover:text-[#FACC15] transition-colors">
                   சமுதாய செய்திகள் (News)
                 </Link>
+              </li>
+              <li>
+                <a
+                  href="https://kurumbar-admin.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#FACC15] transition-colors inline-flex items-center gap-1.5 text-[#FACC15] font-bold"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>{isTa ? "நிர்வாக போர்டல் (Admin)" : "Admin Governance Portal"}</span>
+                  <ExternalLink className="w-3 h-3 ml-0.5 opacity-70" />
+                </a>
               </li>
               <li>
                 <Link href="#gallery" className="hover:text-[#FACC15] transition-colors">
