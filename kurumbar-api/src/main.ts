@@ -119,15 +119,27 @@ async function main(
           "https://kurumbar.org",
           "https://www.kurumbar.org",
           "https://admin.kurumbar.org",
+          "https://kurumbar-web.vercel.app",
+          "https://kurumbar-admin.vercel.app",
         ];
         break;
       }
       case "STG": {
-        origin = ["https://stg.kurumbar.org", "https://stg-admin.kurumbar.org"];
+        origin = [
+          "https://stg.kurumbar.org",
+          "https://stg-admin.kurumbar.org",
+          "https://kurumbar-web.vercel.app",
+          "https://kurumbar-admin.vercel.app",
+        ];
         break;
       }
       case "DEV": {
-        origin = ["http://localhost:3000", "http://localhost:5173"];
+        origin = [
+          "http://localhost:3000",
+          "http://localhost:5173",
+          "https://kurumbar-web.vercel.app",
+          "https://kurumbar-admin.vercel.app",
+        ];
         break;
       }
       default:

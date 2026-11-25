@@ -4,6 +4,7 @@ import { SentryModule } from "@sentry/nestjs/setup";
 import { LoggerModule } from "./common/logger/logger.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
+import { MembersModule } from "./members/members.module";
 import { ShutdownObserver } from "./util/middlewares/shutdown-observer";
 
 @Module({
@@ -12,6 +13,7 @@ import { ShutdownObserver } from "./util/middlewares/shutdown-observer";
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
     HealthModule,
+    MembersModule,
     SentryModule.forRoot(),
   ],
   providers: [ShutdownObserver],
