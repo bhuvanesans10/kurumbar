@@ -149,7 +149,7 @@ void main() {
 
     await tester.pumpWidget(
       MultiProvider(
-        providers: buildRootProviders(),
+        providers: buildRootProviders(initialAuth: true),
         child: const KurumbarApp(),
       ),
     );
@@ -166,5 +166,26 @@ void main() {
     // Verify Tamil localized header
     expect(find.text('குறும்பர் சமுதாயம்'), findsWidgets);
     expect(find.text('English'), findsOneWidget);
+  });
+
+  testWidgets('KurumbarApp renders Member Login when unauthenticated', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: buildRootProviders(initialAuth: false),
+        child: const KurumbarApp(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // Verify login screen elements
+    expect(find.text('Member Sign In'), findsOneWidget);
+    expect(find.text('Send OTP'), findsOneWidget);
   });
 }

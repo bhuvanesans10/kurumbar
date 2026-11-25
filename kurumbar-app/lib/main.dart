@@ -9,9 +9,9 @@ import 'package:kurumbar/backend/providers/auth_provider.dart';
 import 'package:kurumbar/l10n/app_localizations.dart';
 import 'package:kurumbar/utils/design_system.dart';
 
-List<SingleChildWidget> buildRootProviders() => <SingleChildWidget>[
+List<SingleChildWidget> buildRootProviders({bool initialAuth = false}) => <SingleChildWidget>[
   ChangeNotifierProvider<AppLocaleProvider>(create: (_) => AppLocaleProvider()),
-  ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+  ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider(initialAuth: initialAuth)),
 ];
 
 Future<void> main() async {

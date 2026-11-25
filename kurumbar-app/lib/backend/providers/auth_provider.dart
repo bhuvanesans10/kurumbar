@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 /// Manages member authentication and profile state.
 class AuthProvider extends ChangeNotifier {
-  bool _isAuthenticated =
-      true; // Default to true so user sees the rich dashboard immediately
+  bool _isAuthenticated;
+
+  AuthProvider({bool initialAuth = false}) : _isAuthenticated = initialAuth;
 
   Map<String, dynamic> _member = {
     'id': 'KB-2026-8942',

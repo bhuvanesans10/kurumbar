@@ -29,13 +29,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _handleSendOtp(bool isTa) {
-    if (_phoneController.text.trim().length < 10) {
+    final phone = _phoneController.text.trim();
+    if (!RegExp(r'^[6-9]\d{9}$').hasMatch(phone)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             isTa
-                ? 'சரியான 10 இலக்க தொலைபேசி எண்ணை உள்ளிடவும்'
-                : 'Please enter a valid 10-digit phone number',
+                ? 'சரியான 10 இலக்க இந்திய கைபேசி எண்ணை உள்ளிடவும் (எ.கா: 9443212345)'
+                : 'Please enter a valid 10-digit Indian mobile number (e.g. 9443212345)',
           ),
           backgroundColor: Colors.red.shade700,
         ),
@@ -57,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
             content: Text(
               isTa
                   ? 'சரிபார்ப்புக் குறியீடு (OTP: 8942) அனுப்பப்பட்டது'
-                  : 'Verification code (OTP: 8942) sent',
+                  : 'Verification code (OTP: 8942) sent successfully',
             ),
             backgroundColor: KurumbarDesignSystem.primaryGreen,
           ),
@@ -66,7 +67,21 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void _handleVerifyOtp() {
+  void _handleVerifyOtp(bool isTa) {
+    final otp = _otpController.text.trim();
+    if (otp.length != 4) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            isTa
+                ? '4 இலக்க OTP குறியீட்டை உள்ளிடவும் (டெமோ: 8942)'
+                : 'Please enter a 4-digit OTP code (Demo: 8942)',
+          ),
+          backgroundColor: Colors.red.shade700,
+        ),
+      );
+      return;
+    }
     setState(() => _isLoading = true);
     Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
@@ -336,7 +351,7 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: _isLoading
                             ? null
                             : (_otpSent
-                                  ? _handleVerifyOtp
+                                  ? () => _handleVerifyOtp(isTa)
                                   : () => _handleSendOtp(isTa)),
                         child: _isLoading
                             ? const SizedBox(
@@ -408,8 +423,9 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 24),
 
               // Register Prompt
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Text(
                     isTa ? 'புதிய உறுப்பினரா? ' : 'Not a registered member? ',

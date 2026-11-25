@@ -17,6 +17,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final _nameEnCtrl = TextEditingController(text: 'S. Bhuvanesan');
   final _phoneCtrl = TextEditingController(text: '9443212345');
   final _addressCtrl = TextEditingController(text: '24, பாரதி தெரு, அந்தியூர்');
+  final _pincodeCtrl = TextEditingController(text: '638501');
   String _selectedDistrict = 'ஈரோடு (Erode)';
   String _selectedKulam = 'செல்ல குலம் (Chella Kulam)';
   String _selectedBlood = 'O+';
@@ -54,10 +55,81 @@ class _RegistrationPageState extends State<RegistrationPage> {
     _nameEnCtrl.dispose();
     _phoneCtrl.dispose();
     _addressCtrl.dispose();
+    _pincodeCtrl.dispose();
     super.dispose();
   }
 
+  bool _validateStep(int step, bool isTa) {
+    if (step == 0) {
+      if (_nameTaCtrl.text.trim().length < 2) {
+        _showError(
+          isTa
+              ? 'உங்கள் பெயரை தமிழில் சரியாக உள்ளிடவும் (குறைந்தது 2 எழுத்துகள்)'
+              : 'Please enter your Tamil name (minimum 2 characters)',
+        );
+        return false;
+      }
+      if (_nameEnCtrl.text.trim().length < 2) {
+        _showError(
+          isTa
+              ? 'உங்கள் பெயரை ஆங்கிலத்தில் உள்ளிடவும் (குறைந்தது 2 எழுத்துகள்)'
+              : 'Please enter your English name (minimum 2 characters)',
+        );
+        return false;
+      }
+      final phone = _phoneCtrl.text.trim();
+      if (!RegExp(r'^[6-9]\d{9}$').hasMatch(phone)) {
+        _showError(
+          isTa
+              ? 'சரியான 10 இலக்க இந்திய கைபேசி எண்ணை உள்ளிடவும் (எ.கா: 9443212345)'
+              : 'Please enter a valid 10-digit Indian mobile number',
+        );
+        return false;
+      }
+    } else if (step == 1) {
+      if (_selectedKulam.isEmpty || _selectedDistrict.isEmpty) {
+        _showError(
+          isTa
+              ? 'தயவுசெய்து உங்கள் குலம் மற்றும் சொந்த மாவட்டத்தை தேர்வு செய்யவும்'
+              : 'Please select your Kulam and Native District',
+        );
+        return false;
+      }
+    } else if (step == 2) {
+      if (_addressCtrl.text.trim().length < 8) {
+        _showError(
+          isTa
+              ? 'முழுமையான குடியிருப்பு முகவரியை உள்ளிடவும் (குறைந்தது 8 எழுத்துகள்)'
+              : 'Please enter your complete address (minimum 8 characters)',
+        );
+        return false;
+      }
+      final pin = _pincodeCtrl.text.trim();
+      if (!RegExp(r'^\d{6}$').hasMatch(pin)) {
+        _showError(
+          isTa
+              ? 'சரியான 6 இலக்க அஞ்சல் குறியீட்டை உள்ளிடவும் (எ.கா: 638501)'
+              : 'Please enter a valid 6-digit postal PIN code (e.g. 638501)',
+        );
+        return false;
+      }
+    }
+    return true;
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red.shade700,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   void _finishRegistration(bool isTa) {
+    if (!_validateStep(2, isTa)) return;
+
     context.read<AuthProvider>().registerMember({
       'nameTa': _nameTaCtrl.text.trim(),
       'nameEn': _nameEnCtrl.text.trim(),
@@ -65,7 +137,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       'district': _selectedDistrict,
       'kulam': _selectedKulam,
       'bloodGroup': _selectedBlood,
-      'address': _addressCtrl.text.trim(),
+      'address': '${_addressCtrl.text.trim()} - ${_pincodeCtrl.text.trim()}',
       'id': 'KB-2026-${1000 + DateTime.now().millisecond}',
     });
 
@@ -193,8 +265,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
               _buildField(
                 'முழு முகவரி (Residential Address)',
                 _addressCtrl,
-                'கதவு எண், தெரு, கிராமம், வட்டம், அஞ்சல் குறியீடு',
-                maxLines: 3,
+                'கதவு எண், தெரு, கிராமம், வட்டம்',
+                maxLines: 2,
+              ),
+              _buildField(
+                'அஞ்சல் குறியீட்டு எண் (Postal PIN Code)',
+                _pincodeCtrl,
+                '638501',
+                keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 14),
               Container(
@@ -263,6 +341,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                     ),
                     onPressed: () {
+                      if (!_validateStep(_step, isTa)) return;
                       if (_step < 2) {
                         setState(() => _step++);
                       } else {
