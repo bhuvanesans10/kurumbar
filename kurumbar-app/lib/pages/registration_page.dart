@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:kurumbar/backend/providers/app_locale_provider.dart';
 import 'package:kurumbar/backend/providers/auth_provider.dart';
+import 'package:kurumbar/backend/api/protected_routes_api_service.dart';
 import 'package:kurumbar/utils/design_system.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -127,8 +128,38 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  void _finishRegistration(bool isTa) {
+  Future<void> _finishRegistration(bool isTa) async {
     if (!_validateStep(2, isTa)) return;
+
+    String membershipId = 'TN04M${100000 + DateTime.now().millisecond}';
+    try {
+      final apiService = ProtectedRoutesApiService();
+      final res = await apiService.makeRequest(
+        path: '/members',
+        method: 'POST',
+        body: {
+          'nameTa': _nameTaCtrl.text.trim(),
+          'nameEn': _nameEnCtrl.text.trim(),
+          'mobile': _phoneCtrl.text.trim(),
+          'gender': 'MALE',
+          'district': _selectedDistrict.split(' ')[0],
+          'address': _addressCtrl.text.trim(),
+          'pincode': _pincodeCtrl.text.trim(),
+          'kulam': _selectedKulam.split(' ')[0],
+          'bloodGroup': _selectedBlood,
+        },
+      );
+      if (res.isSuccess && res.data is Map<String, dynamic>) {
+        final data = res.data as Map<String, dynamic>;
+        if (data['membershipId'] != null) {
+          membershipId = data['membershipId'].toString();
+        }
+      }
+    } catch (_) {
+      // Graceful offline fallback
+    }
+
+    if (!mounted) return;
 
     context.read<AuthProvider>().registerMember({
       'nameTa': _nameTaCtrl.text.trim(),
@@ -138,7 +169,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       'kulam': _selectedKulam,
       'bloodGroup': _selectedBlood,
       'address': '${_addressCtrl.text.trim()} - ${_pincodeCtrl.text.trim()}',
-      'id': 'KB-2026-${1000 + DateTime.now().millisecond}',
+      'id': membershipId,
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
