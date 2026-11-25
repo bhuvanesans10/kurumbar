@@ -173,15 +173,13 @@ export default function Header({ lang, setLang }: HeaderProps) {
 
           {/* Action Button */}
           <div className="hidden lg:flex items-center gap-3">
-            <a
-              href="https://kurumbar-admin.vercel.app"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/admin"
               className="inline-flex items-center gap-1.5 bg-[#0D3B2E] hover:bg-[#14532D] text-[#FACC15] border border-[#FACC15]/30 px-3.5 py-2.5 rounded-xl font-bold text-xs shadow-xs transition-all hover:scale-105"
             >
               <ShieldCheck className="w-4 h-4 text-[#FACC15]" />
               <span>{lang === "ta" ? "நிர்வாக போர்டல்" : "Admin Portal"}</span>
-            </a>
+            </Link>
             <Link
               href="#register"
               className="inline-flex items-center gap-2 bg-[#15803D] hover:bg-[#14532D] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
@@ -294,16 +292,14 @@ export default function Header({ lang, setLang }: HeaderProps) {
                 <UserCheck className="w-5 h-5 text-[#FACC15]" />
                 <span>{t.ctaRegister}</span>
               </Link>
-              <a
-                href="https://kurumbar-admin.vercel.app"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/admin"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full inline-flex items-center justify-center gap-2 bg-[#0D3B2E] text-[#FACC15] border border-[#FACC15]/30 px-5 py-2.5 rounded-xl font-bold text-center text-sm shadow-xs"
               >
                 <ShieldCheck className="w-4 h-4 text-[#FACC15]" />
                 <span>{lang === "ta" ? "நிர்வாக போர்டல் (Admin)" : "Admin Portal"}</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

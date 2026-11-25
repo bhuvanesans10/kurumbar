@@ -92,16 +92,13 @@ export default function Footer({ lang }: FooterProps) {
                 </Link>
               </li>
               <li>
-                <a
-                  href="https://kurumbar-admin.vercel.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/admin"
                   className="hover:text-[#FACC15] transition-colors inline-flex items-center gap-1.5 text-[#FACC15] font-bold"
                 >
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>{isTa ? "நிர்வாக போர்டல் (Admin)" : "Admin Governance Portal"}</span>
-                  <ExternalLink className="w-3 h-3 ml-0.5 opacity-70" />
-                </a>
+                </Link>
               </li>
               <li>
                 <Link href="#gallery" className="hover:text-[#FACC15] transition-colors">
