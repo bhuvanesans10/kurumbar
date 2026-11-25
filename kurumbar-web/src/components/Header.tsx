@@ -88,8 +88,8 @@ export default function Header({ lang, setLang }: HeaderProps) {
       </div>
 
       {/* Main navigation */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-18 sm:h-20 gap-2">
+      <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-18 sm:h-20 gap-3">
           {/* Logo & Brand Identity */}
           <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
             <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-xs border border-[#15803D]/20 bg-[#FAFAF5] p-1 flex items-center justify-center transition-transform group-hover:scale-105 shrink-0">
@@ -102,7 +102,7 @@ export default function Header({ lang, setLang }: HeaderProps) {
                 priority
               />
             </div>
-            <div className="min-w-0">
+            <div className="shrink-0">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <span className="text-xl sm:text-2xl font-black text-[#14532D] tracking-tight">
                   KURUMBAR
@@ -111,69 +111,62 @@ export default function Header({ lang, setLang }: HeaderProps) {
                   குறும்பர்
                 </span>
               </div>
-              <p className="hidden 2xl:block text-[11px] text-[#475569] font-medium tracking-wide">
+              <p className="hidden min-[1600px]:block text-[11px] text-[#475569] font-medium tracking-wide">
                 அதிகாரப்பூர்வ சமூக இணையதளம் • www.kurumbar.org
               </p>
-              <p className="hidden sm:block 2xl:hidden text-[10px] text-[#475569] font-medium tracking-wide truncate max-w-[200px]">
+              <p className="hidden sm:block min-[1600px]:hidden text-[10px] text-[#475569] font-medium tracking-wide">
                 அதிகாரப்பூர்வ தளம்
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation Links (Visible on xl: 1200px+) */}
-          <nav className="hidden xl:flex items-center gap-1 2xl:gap-2 shrink-0">
+          <nav className="hidden xl:flex items-center gap-1 2xl:gap-1.5 shrink-0">
             <Link
               href="#home"
-              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2 py-1.5 text-xs 2xl:text-[13px] font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.home}
             </Link>
             <Link
               href="#about"
-              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2 py-1.5 text-xs 2xl:text-[13px] font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.about}
             </Link>
             <Link
-              href="#register"
-              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#15803D] hover:bg-[#DCFCE7]/60 rounded-lg transition-colors flex items-center gap-1 whitespace-nowrap"
-            >
-              <UserCheck className="w-3.5 h-3.5 text-[#15803D]" />
-              <span>{t.register}</span>
-            </Link>
-            <Link
               href="#matrimony"
-              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2 py-1.5 text-xs 2xl:text-[13px] font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.matrimony}
             </Link>
             <Link
               href="#marketplace"
-              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2 py-1.5 text-xs 2xl:text-[13px] font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.marketplace}
             </Link>
             <Link
               href="#jobs"
-              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2 py-1.5 text-xs 2xl:text-[13px] font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.jobs}
             </Link>
             <Link
               href="#news"
-              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2 py-1.5 text-xs 2xl:text-[13px] font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.news}
             </Link>
             <Link
               href="#gallery"
-              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2 py-1.5 text-xs 2xl:text-[13px] font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.gallery}
             </Link>
             <Link
               href="#contact"
-              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2 py-1.5 text-xs 2xl:text-[13px] font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.contact}
             </Link>
@@ -183,7 +176,7 @@ export default function Header({ lang, setLang }: HeaderProps) {
           <div className="hidden xl:flex items-center shrink-0">
             <Link
               href="#register"
-              className="inline-flex items-center gap-2 bg-[#15803D] hover:bg-[#14532D] text-white px-5 py-2.5 rounded-xl font-bold text-xs 2xl:text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 whitespace-nowrap"
+              className="inline-flex items-center gap-2 bg-[#15803D] hover:bg-[#14532D] text-white px-4 2xl:px-5 py-2.5 rounded-xl font-bold text-xs 2xl:text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 whitespace-nowrap"
             >
               <UserCheck className="w-4 h-4 text-[#FACC15]" />
               <span>{t.ctaRegister}</span>
