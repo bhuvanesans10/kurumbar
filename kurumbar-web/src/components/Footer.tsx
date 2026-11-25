@@ -92,15 +92,6 @@ export default function Footer({ lang }: FooterProps) {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/admin"
-                  className="hover:text-[#FACC15] transition-colors inline-flex items-center gap-1.5 text-[#FACC15] font-bold"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>{isTa ? "நிர்வாக போர்டல் (Admin)" : "Admin Governance Portal"}</span>
-                </Link>
-              </li>
-              <li>
                 <Link href="#gallery" className="hover:text-[#FACC15] transition-colors">
                   புகைப்படங்கள் (Gallery)
                 </Link>

@@ -121,77 +121,69 @@ export default function Header({ lang, setLang }: HeaderProps) {
           </Link>
 
           {/* Desktop Navigation Links (Visible on xl: 1200px+) */}
-          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1.5 min-w-0">
+          <nav className="hidden xl:flex items-center gap-1 2xl:gap-2 shrink-0">
             <Link
               href="#home"
-              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.home}
             </Link>
             <Link
               href="#about"
-              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.about}
             </Link>
             <Link
               href="#register"
-              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#15803D] hover:bg-[#DCFCE7]/60 rounded-lg transition-colors flex items-center gap-1 whitespace-nowrap"
+              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#15803D] hover:bg-[#DCFCE7]/60 rounded-lg transition-colors flex items-center gap-1 whitespace-nowrap"
             >
               <UserCheck className="w-3.5 h-3.5 text-[#15803D]" />
               <span>{t.register}</span>
             </Link>
             <Link
               href="#matrimony"
-              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.matrimony}
             </Link>
             <Link
               href="#marketplace"
-              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.marketplace}
             </Link>
             <Link
               href="#jobs"
-              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.jobs}
             </Link>
             <Link
               href="#news"
-              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.news}
             </Link>
             <Link
               href="#gallery"
-              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.gallery}
             </Link>
             <Link
               href="#contact"
-              className="px-2 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-sm font-bold text-[#1E293B] hover:text-[#15803D] hover:bg-[#DCFCE7]/50 rounded-lg transition-colors whitespace-nowrap"
             >
               {t.contact}
             </Link>
           </nav>
 
-          {/* Action Button & Admin Portal (Visible on xl: 1200px+) */}
-          <div className="hidden xl:flex items-center gap-2 2xl:gap-3 shrink-0">
-            <Link
-              href="/admin"
-              className="inline-flex items-center gap-1.5 bg-[#0D3B2E] hover:bg-[#14532D] text-[#FACC15] border border-[#FACC15]/30 px-2.5 2xl:px-3.5 py-2 rounded-xl font-bold text-xs shadow-xs transition-all hover:scale-105 whitespace-nowrap"
-            >
-              <ShieldCheck className="w-4 h-4 text-[#FACC15]" />
-              <span className="hidden 2xl:inline">{lang === "ta" ? "நிர்வாக போர்டல்" : "Admin Portal"}</span>
-              <span className="2xl:hidden">{lang === "ta" ? "நிர்வாகம்" : "Admin"}</span>
-            </Link>
+          {/* Action CTA Button (Visible on xl: 1200px+) */}
+          <div className="hidden xl:flex items-center shrink-0">
             <Link
               href="#register"
-              className="inline-flex items-center gap-1.5 2xl:gap-2 bg-[#15803D] hover:bg-[#14532D] text-white px-3.5 2xl:px-5 py-2 2xl:py-2.5 rounded-xl font-bold text-xs 2xl:text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 whitespace-nowrap"
+              className="inline-flex items-center gap-2 bg-[#15803D] hover:bg-[#14532D] text-white px-5 py-2.5 rounded-xl font-bold text-xs 2xl:text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 whitespace-nowrap"
             >
               <UserCheck className="w-4 h-4 text-[#FACC15]" />
               <span>{t.ctaRegister}</span>
@@ -201,12 +193,11 @@ export default function Header({ lang, setLang }: HeaderProps) {
           {/* Mobile / Tablet Controls (Visible on screens < xl) */}
           <div className="xl:hidden flex items-center gap-2">
             <Link
-              href="/admin"
-              className="inline-flex items-center gap-1 bg-[#0D3B2E] text-[#FACC15] border border-[#FACC15]/30 px-2.5 py-1.5 rounded-lg font-bold text-xs shadow-xs"
-              title="Admin Portal"
+              href="#register"
+              className="inline-flex items-center gap-1.5 bg-[#15803D] text-white px-3.5 py-1.5 rounded-xl font-bold text-xs shadow-xs"
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-[#FACC15]" />
-              <span>{lang === "ta" ? "நிர்வாகம்" : "Admin"}</span>
+              <UserCheck className="w-3.5 h-3.5 text-[#FACC15]" />
+              <span>{lang === "ta" ? "பதிவு செய்க" : "Register"}</span>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -329,22 +320,14 @@ export default function Header({ lang, setLang }: HeaderProps) {
               {t.contact}
             </Link>
 
-            <div className="pt-3 flex flex-col gap-2">
+            <div className="pt-3">
               <Link
                 href="#register"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full inline-flex items-center justify-center gap-2 bg-[#15803D] text-white px-5 py-2.5 rounded-xl font-bold text-center text-sm shadow-md"
+                className="w-full inline-flex items-center justify-center gap-2 bg-[#15803D] text-white px-5 py-3 rounded-xl font-bold text-center text-sm shadow-md"
               >
                 <UserCheck className="w-4 h-4 text-[#FACC15]" />
                 <span>{t.ctaRegister}</span>
-              </Link>
-              <Link
-                href="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full inline-flex items-center justify-center gap-2 bg-[#0D3B2E] text-[#FACC15] border border-[#FACC15]/30 px-5 py-2.5 rounded-xl font-bold text-center text-sm shadow-xs"
-              >
-                <ShieldCheck className="w-4 h-4 text-[#FACC15]" />
-                <span>{lang === "ta" ? "நிர்வாக போர்டல் (Admin Portal)" : "Admin Portal"}</span>
               </Link>
             </div>
           </div>
