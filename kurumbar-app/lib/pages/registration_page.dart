@@ -14,11 +14,11 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   int _step = 0; // 0 = Personal, 1 = Roots, 2 = Contact
-  final _nameTaCtrl = TextEditingController(text: 'சு. புவனேசன்');
-  final _nameEnCtrl = TextEditingController(text: 'S. Bhuvanesan');
-  final _phoneCtrl = TextEditingController(text: '9443212345');
-  final _addressCtrl = TextEditingController(text: '24, பாரதி தெரு, அந்தியூர்');
-  final _pincodeCtrl = TextEditingController(text: '638501');
+  final _nameTaCtrl = TextEditingController();
+  final _nameEnCtrl = TextEditingController();
+  final _phoneCtrl = TextEditingController();
+  final _addressCtrl = TextEditingController();
+  final _pincodeCtrl = TextEditingController();
   String _selectedDistrict = 'ஈரோடு (Erode)';
   String _selectedKulam = 'செல்ல குலம் (Chella Kulam)';
   String _selectedBlood = 'O+';
