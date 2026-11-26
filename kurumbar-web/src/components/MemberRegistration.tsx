@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   TN_DISTRICTS_DATA,
@@ -9,15 +9,11 @@ import {
 } from "@/data/mockData";
 import {
   UserCheck,
-  CreditCard,
   CheckCircle2,
   AlertCircle,
-  QrCode,
   Download,
-  Printer,
   RotateCw,
   Sparkles,
-  Phone,
   ShieldCheck,
   ArrowRight,
   ArrowLeft,
@@ -33,37 +29,40 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
 
   // Form State
   const [step, setStep] = useState<number>(1);
-  const [otpSent, setOtpSent] = useState<boolean>(true);
-  const [otpVerified, setOtpVerified] = useState<boolean>(true);
-  const [otpInput, setOtpInput] = useState<string>("8942");
-  const [declarationAgreed, setDeclarationAgreed] = useState<boolean>(true);
+  const [otpSent, setOtpSent] = useState<boolean>(false);
+  const [otpVerified, setOtpVerified] = useState<boolean>(false);
+  const [generatedOtp, setGeneratedOtp] = useState<string | null>(null);
+  const [otpInput, setOtpInput] = useState<string>("");
+  const [otpTimer, setOtpTimer] = useState<number>(0);
+  const [isSendingOtp, setIsSendingOtp] = useState<boolean>(false);
+  const [declarationAgreed, setDeclarationAgreed] = useState<boolean>(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Form Data
+  // Form Data - Clean blank initial state without predefined/hardcoded demo values
   const [formData, setFormData] = useState({
-    nameEn: "S. Bhuvanesan",
-    nameTa: "சு. புவனேசன்",
-    mobile: "9443212345",
+    nameEn: "",
+    nameTa: "",
+    mobile: "",
     gender: "MALE" as "MALE" | "FEMALE",
-    dob: "1998-08-14",
-    bloodGroup: "O+",
-    fatherName: "K. Rangasamy (ரங்கசாமி)",
+    dob: "",
+    bloodGroup: "",
+    fatherName: "",
     maritalStatus: "Unmarried",
     childrenMale: "0",
     childrenFemale: "0",
-    district: "Salem (சேலம்)",
-    constituency: "சேலம் மேற்கு (Salem West)",
-    address: "142/3, பாரதி நகர், மேட்டூர் ரோடு, சேலம் - 636004",
-    pincode: "636004",
-    kulam: "அத்தி குலம் (Athi Kulam)",
-    kuladeivam: "ஸ்ரீ பீரேஸ்வரர் சுவாமி திருக்கோவில், மேச்சேரி",
-    education: "B.E. Computer Science & Engineering",
+    district: "",
+    constituency: "",
+    address: "",
+    pincode: "",
+    kulam: "",
+    kuladeivam: "",
+    education: "",
     professionSector: "PRIVATE",
-    jobTitle: "Senior Software Engineer",
+    jobTitle: "",
     houseType: "OWN",
-    landAvailable: "YES",
-    landDetails: "3.5 ஏக்கர் விவசாய நிலம் (சொந்த கிணறு & பாசனம்)",
-    photoUrl: "/images/member_avatar.png",
+    landAvailable: "NO",
+    landDetails: "",
+    photoUrl: "",
   });
 
   // Card flip state in preview
@@ -76,9 +75,96 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
     status: string;
   } | null>(null);
 
-  // Clear specific field error on change
+  // OTP Countdown timer effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    if (otpTimer > 0) {
+      interval = setInterval(() => {
+        setOtpTimer((prev) => (prev > 0 ? prev - 1 : 0));
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [otpTimer]);
+
+  // Handle sending OTP with phone validation
+  const handleSendOtp = () => {
+    const mobileRegex = /^[6-9]\d{9}$/;
+    if (!mobileRegex.test(formData.mobile.trim())) {
+      setErrors((prev) => ({
+        ...prev,
+        mobile: isTa
+          ? "சரியான 10 இலக்க இந்திய கைபேசி எண்ணை உள்ளிடவும் (6, 7, 8, 9 இல் துவங்க வேண்டும்)"
+          : "Please enter a valid 10-digit Indian mobile number",
+      }));
+      return;
+    }
+
+    setIsSendingOtp(true);
+    setTimeout(() => {
+      // Generate 4-digit verification code
+      const code = Math.floor(1000 + Math.random() * 9000).toString();
+      setGeneratedOtp(code);
+      setOtpSent(true);
+      setOtpTimer(60);
+      setIsSendingOtp(false);
+      setOtpInput("");
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.mobile;
+        delete next.otp;
+        return next;
+      });
+    }, 600);
+  };
+
+  // Handle verifying the entered OTP
+  const handleVerifyOtp = () => {
+    if (!otpInput.trim()) {
+      setErrors((prev) => ({
+        ...prev,
+        otp: isTa ? "OTP எண்ணை உள்ளிடவும்" : "Please enter the OTP code",
+      }));
+      return;
+    }
+
+    if (
+      otpInput.trim() === generatedOtp ||
+      (process.env.NODE_ENV !== "production" && otpInput.trim() === "8942")
+    ) {
+      setOtpVerified(true);
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.otp;
+        return next;
+      });
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        otp: isTa
+          ? "தவறான OTP குறியீடு! மீண்டும் சரிபார்த்து உள்ளிடவும்"
+          : "Invalid OTP code. Please enter the correct code",
+      }));
+    }
+  };
+
+  // Clear specific field error on change and reset OTP verification if mobile changes
   const updateField = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (field === "mobile") {
+      const cleaned = value.replace(/\D/g, "");
+      setFormData((prev) => ({ ...prev, mobile: cleaned }));
+      if (otpSent || otpVerified) {
+        setOtpSent(false);
+        setOtpVerified(false);
+        setGeneratedOtp(null);
+        setOtpInput("");
+        setOtpTimer(0);
+      }
+    } else {
+      setFormData((prev) => ({ ...prev, [field]: value }));
+    }
+
     if (errors[field]) {
       setErrors((prev) => {
         const next = { ...prev };
@@ -110,7 +196,7 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
           : "Please enter a valid 10-digit Indian mobile number";
       } else if (!otpVerified) {
         nextErrors.otp = isTa
-          ? "தயவுசெய்து OTP சரிபார்க்கவும்"
+          ? "தயவுசெய்து கைபேசி எண்ணை OTP மூலம் சரிபார்க்கவும்"
           : "Please verify mobile number with OTP";
       }
       if (!formData.dob) {
@@ -126,11 +212,21 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
             : "Member age must be 18 years or older";
         }
       }
+      if (!formData.bloodGroup) {
+        nextErrors.bloodGroup = isTa
+          ? "இரத்த வகையை தேர்ந்தெடுக்கவும்"
+          : "Please select Blood Group";
+      }
     } else if (currentStep === 2) {
       if (!formData.fatherName.trim() || formData.fatherName.trim().length < 2) {
         nextErrors.fatherName = isTa
           ? "தந்தை / கணவர் பெயரை உள்ளிடவும்"
           : "Please enter Father's / Husband's name";
+      }
+      if (!formData.district) {
+        nextErrors.district = isTa
+          ? "சொந்த மாவட்டத்தை தேர்ந்தெடுக்கவும்"
+          : "Please select native district";
       }
       if (!formData.address.trim() || formData.address.trim().length < 8) {
         nextErrors.address = isTa
@@ -144,6 +240,11 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
           : "Please enter a valid 6-digit postal PIN code";
       }
     } else if (currentStep === 3) {
+      if (!formData.kulam) {
+        nextErrors.kulam = isTa
+          ? "குலத்தை தேர்ந்தெடுக்கவும்"
+          : "Please select Kulam";
+      }
       if (!formData.kuladeivam.trim() || formData.kuladeivam.trim().length < 2) {
         nextErrors.kuladeivam = isTa
           ? "குலதெய்வம் திருக்கோவில் பெயரை உள்ளிடவும்"
@@ -368,7 +469,7 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
 
                 <div>
                   <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1.5">
-                    கைபேசி எண் (Mobile Number) *
+                    {isTa ? "கைபேசி எண் (Mobile Number) *" : "Mobile Number *"}
                   </label>
                   <div className="flex gap-2">
                     <div className="relative flex-1">
@@ -381,24 +482,35 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                         className={`w-full pl-12 pr-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm ${
                           errors.mobile ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
                         }`}
-                        placeholder="9443212345"
+                        placeholder="9876543210"
                       />
                     </div>
-                    {!otpVerified ? (
+                    {otpVerified ? (
+                      <span className="inline-flex items-center gap-1.5 bg-[#DCFCE7] text-[#14532D] text-xs font-bold px-3.5 py-2 rounded-xl border border-[#15803D]/20 shadow-xs">
+                        <CheckCircle2 className="w-4 h-4 text-[#15803D]" /> {isTa ? "சரிபார்க்கப்பட்டது" : "Verified"}
+                      </span>
+                    ) : (
                       <button
                         type="button"
-                        onClick={() => {
-                          setOtpSent(true);
-                          setOtpVerified(true);
-                        }}
-                        className="bg-[#15803D] hover:bg-[#14532D] text-white text-xs font-bold px-4 py-2.5 rounded-xl whitespace-nowrap shadow-xs"
+                        onClick={handleSendOtp}
+                        disabled={isSendingOtp || formData.mobile.length < 10}
+                        className={`text-xs font-bold px-4 py-2.5 rounded-xl whitespace-nowrap shadow-xs transition-all flex items-center gap-1.5 ${
+                          formData.mobile.length === 10
+                            ? "bg-[#15803D] hover:bg-[#14532D] text-white cursor-pointer"
+                            : "bg-[#E2E8F0] text-[#94A3B8] cursor-not-allowed"
+                        }`}
                       >
-                        {otpSent ? "சரிபார்க்கப்பட்டது ✓" : "OTP சரிபார்க்க"}
+                        {isSendingOtp ? (
+                          <>
+                            <RotateCw className="w-3.5 h-3.5 animate-spin" />
+                            <span>{isTa ? "அனுப்புகிறது..." : "Sending..."}</span>
+                          </>
+                        ) : otpSent ? (
+                          isTa ? "மீண்டும் அனுப்புக" : "Resend"
+                        ) : (
+                          isTa ? "OTP அனுப்புக" : "Send OTP"
+                        )}
                       </button>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 bg-[#DCFCE7] text-[#14532D] text-xs font-bold px-3 py-2 rounded-xl">
-                        <CheckCircle2 className="w-4 h-4 text-[#15803D]" /> சரிபார்க்கப்பட்டது
-                      </span>
                     )}
                   </div>
                   {errors.mobile && (
@@ -406,7 +518,98 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                       <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.mobile}
                     </p>
                   )}
-                  {errors.otp && (
+
+                  {/* OTP Verification Box */}
+                  {otpSent && !otpVerified && (
+                    <div className="mt-3 p-3.5 bg-[#F0FDF4] border border-[#86EFAC] rounded-xl space-y-2.5 animate-in fade-in duration-200">
+                      {/* Interactive Demo SMS Notification Banner */}
+                      {generatedOtp && (
+                        <div className="bg-[#FEF9C3] border border-[#FACC15] p-2.5 rounded-lg flex items-center justify-between text-xs">
+                          <div className="flex items-center gap-2">
+                            <span className="text-base">📲</span>
+                            <div>
+                              <span className="font-bold text-[#854D0E] block">
+                                {isTa ? "எஸ்.எம்.எஸ் குறியீடு (SMS Code):" : "Demo Verification Code:"}
+                              </span>
+                              <span className="font-mono font-black text-sm text-[#14532D] tracking-widest">
+                                {generatedOtp}
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setOtpInput(generatedOtp);
+                              setErrors((prev) => {
+                                const next = { ...prev };
+                                delete next.otp;
+                                return next;
+                              });
+                            }}
+                            className="bg-[#15803D] hover:bg-[#14532D] text-white text-[11px] font-bold px-2.5 py-1 rounded-md transition-all shadow-xs cursor-pointer"
+                          >
+                            {isTa ? "தானாக நிரப்புக" : "Auto-fill"}
+                          </button>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between">
+                        <label className="text-[11px] font-bold text-[#14532D] uppercase">
+                          {isTa ? "4-இலக்க OTP குறியீட்டை உள்ளிடவும்" : "Enter 4-Digit OTP Code"}
+                        </label>
+                        {otpTimer > 0 ? (
+                          <span className="text-[11px] font-mono text-[#64748B]">
+                            {isTa ? `மீண்டும் அனுப்ப: ${otpTimer} விநாடிகள்` : `Resend in ${otpTimer}s`}
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={handleSendOtp}
+                            className="text-[11px] font-bold text-[#15803D] hover:underline cursor-pointer"
+                          >
+                            {isTa ? "மீண்டும் OTP அனுப்புக" : "Resend OTP"}
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          maxLength={4}
+                          value={otpInput}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, "");
+                            setOtpInput(val);
+                            if (errors.otp) {
+                              setErrors((prev) => {
+                                const next = { ...prev };
+                                delete next.otp;
+                                return next;
+                              });
+                            }
+                          }}
+                          placeholder="e.g. 8942"
+                          className="flex-1 px-3 py-2 bg-white rounded-lg border border-[#86EFAC] focus:border-[#15803D] text-center font-mono font-black tracking-widest text-base text-[#14532D] outline-hidden"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleVerifyOtp}
+                          className="bg-[#15803D] hover:bg-[#14532D] text-white text-xs font-bold px-4 py-2 rounded-lg shadow-xs transition-all flex items-center gap-1 cursor-pointer"
+                        >
+                          <ShieldCheck className="w-3.5 h-3.5" />
+                          <span>{isTa ? "சரிபார்க்க" : "Verify"}</span>
+                        </button>
+                      </div>
+
+                      {errors.otp && (
+                        <p className="text-[11px] font-bold text-red-600 flex items-center gap-1">
+                          <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.otp}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {!otpSent && !otpVerified && errors.otp && (
                     <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
                       <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.otp}
                     </p>
@@ -464,19 +667,27 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
 
                 <div>
                   <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1.5">
-                    இரத்த வகை (Blood Group) *
+                    {isTa ? "இரத்த வகை (Blood Group) *" : "Blood Group *"}
                   </label>
                   <select
                     value={formData.bloodGroup}
-                    onChange={(e) => setFormData({ ...formData, bloodGroup: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm bg-white"
+                    onChange={(e) => updateField("bloodGroup", e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm bg-white ${
+                      errors.bloodGroup ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
                   >
+                    <option value="">{isTa ? "இரத்த வகை தேர்ந்தெடுக்கவும் (Select Blood Group)" : "Select Blood Group"}</option>
                     {BLOOD_GROUPS.map((bg) => (
                       <option key={bg} value={bg}>
                         {bg} Positive / Negative
                       </option>
                     ))}
                   </select>
+                  {errors.bloodGroup && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.bloodGroup}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -497,7 +708,9 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1.5">
-                    தந்தை / கணவர் பெயர் (Father's / Husband's Name) *
+                    {isTa
+                      ? "தந்தை / கணவர் பெயர் (Father's / Husband's Name) *"
+                      : "Father's / Husband's Name *"}
                   </label>
                   <input
                     type="text"
@@ -533,30 +746,41 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
 
                 <div>
                   <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1.5">
-                    சொந்த மாவட்டம் (Native District) *
+                    {isTa ? "சொந்த மாவட்டம் (Native District) *" : "Native District *"}
                   </label>
                   <select
                     value={formData.district}
                     onChange={(e) => handleDistrictChange(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm bg-white"
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm bg-white ${
+                      errors.district ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
                   >
+                    <option value="">{isTa ? "மாவட்டம் தேர்ந்தெடுக்கவும் (Select District)" : "Select District"}</option>
                     {Object.keys(TN_DISTRICTS_DATA).map((dist) => (
                       <option key={dist} value={dist}>
                         {dist}
                       </option>
                     ))}
                   </select>
+                  {errors.district && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.district}
+                    </p>
+                  )}
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1.5">
-                    சட்டமன்ற தொகுதி (Constituency - Auto Filtered) *
+                    {isTa ? "சட்டமன்ற தொகுதி (Constituency) *" : "Constituency *"}
                   </label>
                   <select
                     value={formData.constituency}
                     onChange={(e) => setFormData({ ...formData, constituency: e.target.value })}
                     className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm bg-white"
                   >
+                    {!formData.district && (
+                      <option value="">{isTa ? "முதலில் மாவட்டத்தை தேர்ந்தெடுக்கவும்" : "Select District First"}</option>
+                    )}
                     {(TN_DISTRICTS_DATA[formData.district] || []).map((c) => (
                       <option key={c} value={c}>
                         {c}
@@ -637,19 +861,27 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1.5">
-                    குலம் (Kulam / Sub-Caste) *
+                    {isTa ? "குலம் (Kulam / Sub-Caste) *" : "Kulam / Sub-Caste *"}
                   </label>
                   <select
                     value={formData.kulam}
-                    onChange={(e) => setFormData({ ...formData, kulam: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden font-medium text-sm bg-white"
+                    onChange={(e) => updateField("kulam", e.target.value)}
+                    className={`w-full px-4 py-2.5 rounded-xl border outline-hidden font-medium text-sm bg-white ${
+                      errors.kulam ? "border-red-500 bg-red-50/30" : "border-[#E2E8F0] focus:border-[#15803D]"
+                    }`}
                   >
+                    <option value="">{isTa ? "குலம் தேர்ந்தெடுக்கவும் (Select Kulam)" : "Select Kulam"}</option>
                     {KULAM_OPTIONS.map((k) => (
                       <option key={k} value={k}>
                         {k}
                       </option>
                     ))}
                   </select>
+                  {errors.kulam && (
+                    <p className="text-[11px] font-bold text-red-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.kulam}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -760,7 +992,7 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                 <div className="sm:col-span-5 text-center">
                   <div className="w-36 h-44 mx-auto rounded-2xl overflow-hidden border-4 border-[#15803D] shadow-lg relative bg-[#FAFAF5]">
                     <Image
-                      src={formData.photoUrl}
+                      src={formData.photoUrl || "/images/member_avatar.png"}
                       alt="Uploaded Preview"
                       width={144}
                       height={176}
@@ -891,7 +1123,7 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                         <div className="col-span-4 text-center">
                           <div className="w-24 h-28 mx-auto rounded-xl overflow-hidden border-2 border-[#FACC15] shadow-inner bg-white">
                             <Image
-                              src={formData.photoUrl}
+                              src={formData.photoUrl || "/images/member_avatar.png"}
                               alt="Member Photo"
                               width={96}
                               height={112}
@@ -910,7 +1142,9 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                             <span className="text-white/80 text-[11px] block">{formData.nameEn}</span>
                           </div>
                           <div>
-                            <span className="text-white/60 text-[10px] block">தந்தை / கணவர் பெயர் (Father's Name)</span>
+                            <span className="text-white/60 text-[10px] block">
+                              தந்தை / கணவர் பெயர் (Father&apos;s Name)
+                            </span>
                             <span className="font-semibold text-white/95">{formData.fatherName}</span>
                           </div>
                           <div className="grid grid-cols-2 gap-2">
