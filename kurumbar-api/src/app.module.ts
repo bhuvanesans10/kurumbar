@@ -5,6 +5,10 @@ import { LoggerModule } from "./common/logger/logger.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { MembersModule } from "./members/members.module";
+import { MatrimonyModule } from "./matrimony/matrimony.module";
+import { MarketModule } from "./market/market.module";
+import { JobsModule } from "./jobs/jobs.module";
+import { NewsModule } from "./news/news.module";
 import { ShutdownObserver } from "./util/middlewares/shutdown-observer";
 
 @Module({
@@ -14,6 +18,10 @@ import { ShutdownObserver } from "./util/middlewares/shutdown-observer";
     PrismaModule,
     HealthModule,
     MembersModule,
+    MatrimonyModule,
+    MarketModule,
+    JobsModule,
+    NewsModule,
     SentryModule.forRoot(),
   ],
   providers: [ShutdownObserver],
