@@ -132,6 +132,36 @@ export default function App() {
   const [statusFilter, setStatusFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED'>('ALL')
   const [selectedApp, setSelectedApp] = useState<MemberApplication | null>(null)
 
+  // Matrimony & Marketplace Live Moderation State
+  const [matrimonyList, setMatrimonyList] = useState<Array<{
+    id: string
+    name: string
+    gender: string
+    age: string
+    district: string
+    kulam: string
+    verified: boolean
+  }>>([
+    { id: '1', name: 'Dr. கார்த்திகேயன் (MBBS, MD)', gender: 'GROOM (மணமகன்)', age: '28 வயது', district: 'சேலம்', kulam: 'அத்தி குலம்', verified: true },
+    { id: '2', name: 'பிரியதர்ஷினி (B.E. Computer Science)', gender: 'BRIDE (மணமகள்)', age: '25 வயது', district: 'ஈரோடு', kulam: 'முல்லை குலம்', verified: true },
+    { id: '3', name: 'தினேஷ் குமார் (B.Tech Agri, MBA)', gender: 'GROOM (மணமகன்)', age: '29 வயது', district: 'திருப்பூர்', kulam: 'கண்ணங்குலம்', verified: false },
+    { id: '4', name: 'சௌமியா (M.Sc Maths, B.Ed)', gender: 'BRIDE (மணமகள்)', age: '24 வயது', district: 'தருமபுரி', kulam: 'செங்குலம்', verified: true },
+  ])
+
+  const [marketList, setMarketList] = useState<Array<{
+    id: string
+    title: string
+    seller: string
+    district: string
+    price: string
+    category: string
+    status: string
+  }>>([
+    { id: '1', title: 'பாரம்பரிய தூய கம்பளிப் போர்வை (Pure Wool Kambli)', seller: 'மா. பெரியசாமி', district: 'சேலம்', price: '₹ 3,200', category: 'கைத்தறி', status: 'ACTIVE' },
+    { id: '2', title: 'செம்மறி ஆட்டுக்குட்டிகள் (Salem Native Sheep Flock)', seller: 'ஆர். பழனிசாமி', district: 'சேலம்', price: '₹ 8,500', category: 'கால்நடை', status: 'ACTIVE' },
+    { id: '3', title: 'இயற்கை மலைத்தேன் (Forest Organic Honey - 1kg)', seller: 'செ. சக்திவேல்', district: 'தருமபுரி', price: '₹ 650', category: 'இயற்கை உணவு', status: 'ACTIVE' },
+  ])
+
   // Quick Notification Toast
   const [toastMessage, setToastMessage] = useState<string>('')
 
@@ -250,6 +280,56 @@ export default function App() {
       }
     }
     fetchLiveMembers()
+
+    // Fetch Live Matrimony Profiles
+    const fetchLiveMatrimony = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3005/api'
+        const res = await fetch(`${apiUrl}/matrimony?limit=50`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+            setMatrimonyList(data.items.map((m: any) => ({
+              id: m.id,
+              name: `${m.nameTa} (${m.education})`,
+              gender: m.gender === 'FEMALE' ? 'BRIDE (மணமகள்)' : 'GROOM (மணமகன்)',
+              age: `${m.age} வயது`,
+              district: m.district,
+              kulam: m.kulam,
+              verified: m.status === 'APPROVED',
+            })))
+          }
+        }
+      } catch (err) {
+        console.warn('Live matrimony fetch fallback:', err)
+      }
+    }
+    fetchLiveMatrimony()
+
+    // Fetch Live Marketplace Products
+    const fetchLiveMarket = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3005/api'
+        const res = await fetch(`${apiUrl}/market?limit=50`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+            setMarketList(data.items.map((m: any) => ({
+              id: m.id,
+              title: m.titleTa,
+              seller: m.sellerName,
+              district: m.sellerDistrict,
+              price: `₹ ${m.price.toLocaleString('en-IN')}`,
+              category: m.category === 'LIVESTOCK' ? 'கால்நடை' : m.category === 'WOOL_RUGS' ? 'கைத்தறி' : 'இயற்கை உணவு',
+              status: m.status,
+            })))
+          }
+        }
+      } catch (err) {
+        console.warn('Live market fetch fallback:', err)
+      }
+    }
+    fetchLiveMarket()
   }, [])
 
   // Handle Application Approval/Rejection
@@ -808,13 +888,8 @@ export default function App() {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                { name: 'Dr. கார்த்திகேயன் (MBBS, MD)', gender: 'GROOM (மணமகன்)', age: '28 வயது', district: 'சேலம்', kulam: 'அத்தி குலம்', verified: true },
-                { name: 'பிரியதர்ஷினி (B.E. Computer Science)', gender: 'BRIDE (மணமகள்)', age: '25 வயது', district: 'ஈரோடு', kulam: 'முல்லை குலம்', verified: true },
-                { name: 'தினேஷ் குமார் (B.Tech Agri, MBA)', gender: 'GROOM (மணமகன்)', age: '29 வயது', district: 'திருப்பூர்', kulam: 'கண்ணங்குலம்', verified: false },
-                { name: 'சௌமியா (M.Sc Maths, B.Ed)', gender: 'BRIDE (மணமகள்)', age: '24 வயது', district: 'தருமபுரி', kulam: 'செங்குலம்', verified: true },
-              ].map((m, idx) => (
-                <div key={idx} className="p-4 rounded-xl border border-[#E2E8F0] bg-[#FAFAF5] flex items-center justify-between">
+              {matrimonyList.map((m, idx) => (
+                <div key={m.id || idx} className="p-4 rounded-xl border border-[#E2E8F0] bg-[#FAFAF5] flex items-center justify-between">
                   <div>
                     <span className="font-extrabold text-[#14532D] text-sm block">{m.name}</span>
                     <span className="text-xs text-[#64748B] block mt-0.5">{m.gender} • {m.age}</span>
@@ -824,10 +899,29 @@ export default function App() {
                   </div>
                   <button
                     type="button"
-                    onClick={() => showToast(`வரன் ${m.name} சரிபார்க்கப்பட்டு அங்கீகரிக்கப்பட்டது.`)}
-                    className="px-3 py-1.5 bg-[#15803D] hover:bg-[#14532D] text-white rounded-lg text-xs font-bold"
+                    onClick={async () => {
+                      try {
+                        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3005/api'
+                        await fetch(`${apiUrl}/matrimony/${m.id}/status`, {
+                          method: 'PATCH',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ status: 'APPROVED' }),
+                        })
+                      } catch (err) {
+                        console.warn('Matrimony status update fallback:', err)
+                      }
+                      setMatrimonyList((prev) =>
+                        prev.map((item) => (item.id === m.id ? { ...item, verified: true } : item))
+                      )
+                      showToast(`வரன் ${m.name} சரிபார்க்கப்பட்டு அங்கீகரிக்கப்பட்டது.`)
+                    }}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold ${
+                      m.verified
+                        ? 'bg-[#DCFCE7] text-[#15803D] border border-[#15803D]/30'
+                        : 'bg-[#15803D] hover:bg-[#14532D] text-white'
+                    }`}
                   >
-                    சரிபார் ✓
+                    {m.verified ? 'சரிபார்க்கப்பட்டது ✓' : 'சரிபார் ✓'}
                   </button>
                 </div>
               ))}
@@ -847,12 +941,8 @@ export default function App() {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                { title: 'பாரம்பரிய தூய கம்பளிப் போர்வை (Pure Wool Kambli)', seller: 'மா. பெரியசாமி', district: 'சேலம்', price: '₹ 3,200', category: 'கைத்தறி' },
-                { title: 'செம்மறி ஆட்டுக்குட்டிகள் (Salem Native Sheep Flock)', seller: 'ஆர். பழனிசாமி', district: 'சேலம்', price: '₹ 8,500', category: 'கால்நடை' },
-                { title: 'இயற்கை மலைத்தேன் (Forest Organic Honey - 1kg)', seller: 'செ. சக்திவேல்', district: 'தருமபுரி', price: '₹ 650', category: 'இயற்கை உணவு' },
-              ].map((item, idx) => (
-                <div key={idx} className="p-4 rounded-xl border border-[#E2E8F0] bg-[#FAFAF5] flex items-center justify-between">
+              {marketList.map((item, idx) => (
+                <div key={item.id || idx} className="p-4 rounded-xl border border-[#E2E8F0] bg-[#FAFAF5] flex items-center justify-between">
                   <div>
                     <span className="font-extrabold text-[#14532D] text-sm block">{item.title}</span>
                     <span className="text-xs text-[#64748B] block mt-0.5">விற்பனையாளர்: {item.seller} ({item.district})</span>
@@ -860,7 +950,19 @@ export default function App() {
                   </div>
                   <button
                     type="button"
-                    onClick={() => showToast(`பொருள் "${item.title}" தளத்தில் வெளியிட அனுமதிக்கப்பட்டது.`)}
+                    onClick={async () => {
+                      try {
+                        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3005/api'
+                        await fetch(`${apiUrl}/market/${item.id}/status`, {
+                          method: 'PATCH',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ status: 'ACTIVE' }),
+                        })
+                      } catch (err) {
+                        console.warn('Market status update fallback:', err)
+                      }
+                      showToast(`பொருள் "${item.title}" தளத்தில் வெளியிட அனுமதிக்கப்பட்டது.`)
+                    }}
                     className="px-3 py-1.5 bg-[#15803D] hover:bg-[#14532D] text-white rounded-lg text-xs font-bold"
                   >
                     அனுமதி ✓
