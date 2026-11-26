@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:kurumbar/backend/providers/app_locale_provider.dart';
+import 'package:kurumbar/backend/api/protected_routes_api_service.dart';
 import 'package:kurumbar/utils/design_system.dart';
 
 class MarketplacePage extends StatefulWidget {
@@ -13,7 +14,7 @@ class MarketplacePage extends StatefulWidget {
 class _MarketplacePageState extends State<MarketplacePage> {
   int _selectedTab = 0; // 0 = Santhai, 1 = Jobs
 
-  final List<Map<String, dynamic>> _products = [
+  List<Map<String, dynamic>> _products = [
     {
       'title': 'பாரம்பரிய கைத்தறி கம்பளி (Pure Wool Kambli)',
       'seller': 'எஸ். ராமர் (S. Ramar), சேலம்',
@@ -40,7 +41,7 @@ class _MarketplacePageState extends State<MarketplacePage> {
     },
   ];
 
-  final List<Map<String, dynamic>> _jobs = [
+  List<Map<String, dynamic>> _jobs = [
     {
       'title': 'Accounts Executive & Tally',
       'company': 'Kurumbar Wool Cooperative Society',
@@ -63,6 +64,71 @@ class _MarketplacePageState extends State<MarketplacePage> {
       'type': 'ரிமோட் (Remote)',
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLiveMarketAndJobs();
+  }
+
+  Future<void> _fetchLiveMarketAndJobs() async {
+    try {
+      final apiService = ProtectedRoutesApiService();
+      // Fetch products
+      final marketRes = await apiService.makeRequest(path: '/market?limit=50');
+      if (marketRes.isSuccess && marketRes.data is Map<String, dynamic>) {
+        final items = (marketRes.data as Map<String, dynamic>)['items'];
+        if (items is List && items.isNotEmpty) {
+          final mapped = items.map((m) {
+            return {
+              'title': m['titleTa'] ?? m['titleEn'] ?? '',
+              'seller': '${m['sellerName']}, ${m['sellerDistrict']}',
+              'price': '₹${m['price']}',
+              'category': m['category'] == 'LIVESTOCK'
+                  ? 'கால்நடை (Livestock)'
+                  : m['category'] == 'WOOL_RUGS'
+                      ? 'கைத்தறி (Handloom)'
+                      : 'இயற்கை உணவு',
+              'rating': '5.0 ★',
+              'image': m['imageUrl'] ??
+                  'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&q=80&w=400',
+            };
+          }).toList();
+          if (mounted) {
+            setState(() {
+              _products = mapped;
+            });
+          }
+        }
+      }
+
+      // Fetch jobs
+      final jobsRes = await apiService.makeRequest(path: '/jobs?limit=50');
+      if (jobsRes.isSuccess && jobsRes.data is Map<String, dynamic>) {
+        final jItems = (jobsRes.data as Map<String, dynamic>)['items'];
+        if (jItems is List && jItems.isNotEmpty) {
+          final mappedJobs = jItems.map((j) {
+            return {
+              'title': j['titleTa'] ?? j['titleEn'] ?? '',
+              'company': j['company'] ?? '',
+              'location': '${j['district']}, ${j['location']}',
+              'salary': j['salaryRange'] ?? 'தகுதிக்கேற்ப',
+              'type': j['jobType'] == 'FULL_TIME'
+                  ? 'முழு நேரம் (Full-time)'
+                  : 'பகுதி நேரம்',
+            };
+          }).toList();
+          if (mounted) {
+            setState(() {
+              _jobs = mappedJobs;
+            });
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Error fetching live market/jobs: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:kurumbar/backend/providers/app_locale_provider.dart';
+import 'package:kurumbar/backend/api/protected_routes_api_service.dart';
 import 'package:kurumbar/utils/design_system.dart';
 
 class MatrimonyPage extends StatefulWidget {
@@ -13,7 +14,7 @@ class MatrimonyPage extends StatefulWidget {
 class _MatrimonyPageState extends State<MatrimonyPage> {
   int _selectedTab = 0; // 0 = Grooms, 1 = Brides
 
-  final List<Map<String, dynamic>> _grooms = [
+  List<Map<String, dynamic>> _grooms = [
     {
       'id': 'KM-M-101',
       'name': 'கே. கார்த்திகேயன் (K. Karthikeyan)',
@@ -40,7 +41,7 @@ class _MatrimonyPageState extends State<MatrimonyPage> {
     },
   ];
 
-  final List<Map<String, dynamic>> _brides = [
+  List<Map<String, dynamic>> _brides = [
     {
       'id': 'KM-F-201',
       'name': 'ஆர். பிரியதர்ஷினி (R. Priyadharshini)',
@@ -66,6 +67,59 @@ class _MatrimonyPageState extends State<MatrimonyPage> {
       'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400',
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLiveMatrimony();
+  }
+
+  Future<void> _fetchLiveMatrimony() async {
+    try {
+      final apiService = ProtectedRoutesApiService();
+      final res = await apiService.makeRequest(path: '/matrimony?limit=50');
+      if (res.isSuccess && res.data is Map<String, dynamic>) {
+        final items = (res.data as Map<String, dynamic>)['items'];
+        if (items is List && items.isNotEmpty) {
+          final List<Map<String, dynamic>> liveGrooms = [];
+          final List<Map<String, dynamic>> liveBrides = [];
+
+          for (final item in items) {
+            if (item is! Map<String, dynamic>) continue;
+            final mapped = {
+              'id': item['profileId'] ?? item['id'] ?? '',
+              'name': '${item['nameTa']} (${item['nameEn']})',
+              'age': item['age'] ?? 25,
+              'height': item['height'] ?? "5'7\"",
+              'education': item['education'] ?? '',
+              'profession': item['profession'] ?? '',
+              'kulam': item['kulam'] ?? '',
+              'district': item['district'] ?? '',
+              'salary': item['income'] ?? '',
+              'image': item['photoUrl'] ??
+                  (item['gender'] == 'FEMALE'
+                      ? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400'
+                      : 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400'),
+            };
+            if (item['gender'] == 'FEMALE') {
+              liveBrides.add(mapped);
+            } else {
+              liveGrooms.add(mapped);
+            }
+          }
+
+          if (mounted) {
+            setState(() {
+              if (liveGrooms.isNotEmpty) _grooms = liveGrooms;
+              if (liveBrides.isNotEmpty) _brides = liveBrides;
+            });
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Error fetching live matrimony: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
