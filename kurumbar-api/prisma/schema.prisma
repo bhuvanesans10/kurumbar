@@ -50,6 +50,109 @@ model Member {
   @@map("members")
 }
 
+model MatrimonyProfile {
+  id           String          @id @default(cuid())
+  profileId    String          @unique
+  nameTa       String
+  nameEn       String
+  gender       Gender
+  age          Int
+  dob          String?
+  height       String?
+  education    String
+  profession   String
+  income       String?
+  kulam        String
+  subKulam     String?
+  raasi        String?
+  nakshatram   String?
+  district     String
+  city         String?
+  fatherName   String?
+  motherName   String?
+  contactPhone String
+  photoUrl     String?
+  expectations String?
+  status       MatrimonyStatus @default(PENDING)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([gender])
+  @@index([kulam])
+  @@index([district])
+  @@index([status])
+  @@map("matrimony_profiles")
+}
+
+model MarketProduct {
+  id            String          @id @default(cuid())
+  titleTa       String
+  titleEn       String
+  category      ProductCategory
+  price         Float
+  unit          String?
+  sellerName    String
+  sellerPhone   String
+  sellerDistrict String
+  location      String?
+  descriptionTa String?
+  descriptionEn String?
+  imageUrl      String?
+  isVerified    Boolean         @default(true)
+  status        ProductStatus   @default(ACTIVE)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([category])
+  @@index([sellerDistrict])
+  @@index([status])
+  @@map("market_products")
+}
+
+model JobPosting {
+  id           String    @id @default(cuid())
+  titleTa      String
+  titleEn      String
+  company      String
+  location     String
+  district     String
+  jobType      JobType   @default(FULL_TIME)
+  salaryRange  String?
+  experience   String?
+  education    String?
+  description  String?
+  contactPhone String?
+  contactEmail String?
+  status       JobStatus @default(ACTIVE)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([district])
+  @@index([jobType])
+  @@index([status])
+  @@map("job_postings")
+}
+
+model NewsArticle {
+  id            String       @id @default(cuid())
+  titleTa       String
+  titleEn       String?
+  category      NewsCategory
+  summaryTa     String
+  summaryEn     String?
+  content       String?
+  imageUrl      String?
+  eventDate     String?
+  eventLocation String?
+  isPublished   Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([category])
+  @@index([isPublished])
+  @@map("news_articles")
+}
+
 // ============================================================================
 // ENUMS (keep all enums in this lower section, after all models)
 // ============================================================================
@@ -64,4 +167,48 @@ enum MemberStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum MatrimonyStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  MARRIED
+}
+
+enum ProductCategory {
+  LIVESTOCK
+  WOOL_RUGS
+  HONEY
+  MILLETS
+  HERBAL
+  HANDICRAFT
+  OTHER
+}
+
+enum ProductStatus {
+  ACTIVE
+  SOLD
+  ARCHIVED
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  GOVERNMENT
+  APPRENTICESHIP
+  CONTRACT
+}
+
+enum JobStatus {
+  ACTIVE
+  CLOSED
+}
+
+enum NewsCategory {
+  FESTIVAL
+  SCHOLARSHIP
+  MEETING
+  WELFARE
+  GENERAL
 }
