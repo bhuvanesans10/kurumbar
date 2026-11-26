@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { SAMPLE_MARKETPLACE, MarketItem } from "@/data/mockData";
 import {
@@ -19,8 +19,51 @@ interface MarketplaceProps {
 export default function MarketplaceSection({ lang }: MarketplaceProps) {
   const isTa = lang === "ta";
   const [activeCategory, setActiveCategory] = useState<string>("ALL");
+  const [items, setItems] = useState<MarketItem[]>(SAMPLE_MARKETPLACE);
+  const [isLive, setIsLive] = useState<boolean>(false);
 
-  const filteredItems = SAMPLE_MARKETPLACE.filter((item) => {
+  useEffect(() => {
+    const fetchMarket = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3005/api";
+        const res = await fetch(`${apiUrl}/market?limit=50`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+            const mapped: MarketItem[] = data.items.map((m: any) => ({
+              id: m.id,
+              title: isTa ? m.titleTa : m.titleEn,
+              category:
+                m.category === "LIVESTOCK"
+                  ? "LIVESTOCK"
+                  : m.category === "WOOL_RUGS"
+                  ? "HANDLOOM"
+                  : "AGRICULTURE",
+              priceText: `₹${m.price.toLocaleString("en-IN")}${m.unit ? ` (${m.unit})` : ""}`,
+              price: m.price,
+              sellerName: m.sellerName,
+              sellerMobile: m.sellerPhone,
+              district: m.sellerDistrict,
+              location: m.location || m.sellerDistrict,
+              imageUrl: m.imageUrl || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600",
+              description: isTa
+                ? m.descriptionTa || m.descriptionEn
+                : m.descriptionEn || m.descriptionTa,
+              inStock: m.status === "ACTIVE",
+              verified: m.isVerified,
+            }));
+            setItems(mapped);
+            setIsLive(true);
+          }
+        }
+      } catch (err) {
+        console.warn("Live API market fetch failed, using fallback:", err);
+      }
+    };
+    fetchMarket();
+  }, [isTa]);
+
+  const filteredItems = items.filter((item) => {
     if (activeCategory === "ALL") return true;
     return item.category === activeCategory;
   });

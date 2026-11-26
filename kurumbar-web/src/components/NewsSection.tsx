@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { SAMPLE_NEWS, NewsItem } from "@/data/mockData";
 import {
@@ -15,6 +16,36 @@ interface NewsProps {
 
 export default function NewsSection({ lang }: NewsProps) {
   const isTa = lang === "ta";
+  const [news, setNews] = useState<NewsItem[]>(SAMPLE_NEWS);
+  const [isLive, setIsLive] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3005/api";
+        const res = await fetch(`${apiUrl}/news?limit=50`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+            const mapped: NewsItem[] = data.items.map((n: any) => ({
+              id: n.id,
+              title: isTa ? n.titleTa : n.titleEn || n.titleTa,
+              category: n.category as "FESTIVAL" | "SCHOLARSHIP" | "MEETING",
+              date: n.eventDate || new Date(n.createdAt).toLocaleDateString("ta-IN"),
+              summary: isTa ? n.summaryTa : n.summaryEn || n.summaryTa,
+              imageUrl: n.imageUrl || "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600",
+              link: "#",
+            }));
+            setNews(mapped);
+            setIsLive(true);
+          }
+        }
+      } catch (err) {
+        console.warn("Live API news fetch failed, using fallback:", err);
+      }
+    };
+    fetchNews();
+  }, [isTa]);
 
   return (
     <section id="news" className="py-16 lg:py-24 bg-white border-b border-[#E2E8F0]">
@@ -37,7 +68,7 @@ export default function NewsSection({ lang }: NewsProps) {
 
         {/* News Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {SAMPLE_NEWS.map((item) => (
+          {news.map((item) => (
             <div
               key={item.id}
               className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-[#E2E8F0] transition-all flex flex-col justify-between group"

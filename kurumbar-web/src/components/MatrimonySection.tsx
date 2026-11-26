@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { SAMPLE_MATRIMONY, MatrimonyItem } from "@/data/mockData";
 import {
@@ -15,6 +15,7 @@ import {
   Search,
   Filter,
   CheckCircle,
+  Radio,
 } from "lucide-react";
 
 interface MatrimonyProps {
@@ -25,8 +26,48 @@ export default function MatrimonySection({ lang }: MatrimonyProps) {
   const isTa = lang === "ta";
   const [filterGender, setFilterGender] = useState<"ALL" | "GROOM" | "BRIDE">("ALL");
   const [selectedProfile, setSelectedProfile] = useState<MatrimonyItem | null>(null);
+  const [profiles, setProfiles] = useState<MatrimonyItem[]>(SAMPLE_MATRIMONY);
+  const [isLive, setIsLive] = useState<boolean>(false);
 
-  const filteredProfiles = SAMPLE_MATRIMONY.filter((p) => {
+  useEffect(() => {
+    const fetchMatrimony = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3005/api";
+        const res = await fetch(`${apiUrl}/matrimony?limit=50`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+            const mapped: MatrimonyItem[] = data.items.map((m: any) => ({
+              id: m.profileId || m.id,
+              name: isTa ? m.nameTa : m.nameEn,
+              gender: m.gender === "FEMALE" ? "BRIDE" : "GROOM",
+              age: m.age,
+              height: m.height || "5' 6\"",
+              education: m.education,
+              occupation: m.profession,
+              workLocation: m.city || m.district,
+              district: m.district,
+              kulam: m.kulam,
+              star: m.nakshatram || "ரோகிணி (Rohini)",
+              photoUrl:
+                m.photoUrl ||
+                (m.gender === "FEMALE"
+                  ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400"
+                  : "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400"),
+              verified: m.status === "APPROVED",
+            }));
+            setProfiles(mapped);
+            setIsLive(true);
+          }
+        }
+      } catch (err) {
+        console.warn("Live API matrimony fetch failed, using fallback:", err);
+      }
+    };
+    fetchMatrimony();
+  }, [isTa]);
+
+  const filteredProfiles = profiles.filter((p) => {
     if (filterGender === "ALL") return true;
     return p.gender === filterGender;
   });

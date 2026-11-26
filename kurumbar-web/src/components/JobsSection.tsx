@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { SAMPLE_JOBS, JobItem } from "@/data/mockData";
 import {
   Briefcase,
@@ -17,6 +18,39 @@ interface JobsProps {
 
 export default function JobsSection({ lang }: JobsProps) {
   const isTa = lang === "ta";
+  const [jobs, setJobs] = useState<JobItem[]>(SAMPLE_JOBS);
+  const [isLive, setIsLive] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3005/api";
+        const res = await fetch(`${apiUrl}/jobs?limit=50`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+            const mapped: JobItem[] = data.items.map((j: any) => ({
+              id: j.id,
+              title: isTa ? j.titleTa : j.titleEn,
+              company: j.company,
+              district: j.district,
+              jobType: j.jobType === "FULL_TIME" ? "FULL_TIME" : "PART_TIME",
+              salaryText: j.salaryRange || (isTa ? "தகுதிக்கேற்ப" : "Best in Industry"),
+              experience: j.experience || (isTa ? "அனுபவம் தேவையில்லை" : "Entry Level"),
+              contactMobile: j.contactPhone || "9443212345",
+              description: j.description || "",
+              category: j.jobType === "FULL_TIME" ? (isTa ? "முழுநேரம்" : "Full-Time") : (isTa ? "பகுதிநேரம்" : "Part-Time"),
+            }));
+            setJobs(mapped);
+            setIsLive(true);
+          }
+        }
+      } catch (err) {
+        console.warn("Live API jobs fetch failed, using fallback:", err);
+      }
+    };
+    fetchJobs();
+  }, [isTa]);
 
   return (
     <section id="jobs" className="py-16 lg:py-24 bg-[#FAFAF5] border-b border-[#E2E8F0]">
@@ -39,7 +73,7 @@ export default function JobsSection({ lang }: JobsProps) {
 
         {/* Jobs List Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {SAMPLE_JOBS.map((job) => (
+          {jobs.map((job) => (
             <div
               key={job.id}
               className="bg-white rounded-3xl p-6 shadow-md hover:shadow-xl border border-[#E2E8F0] transition-all flex flex-col justify-between"
