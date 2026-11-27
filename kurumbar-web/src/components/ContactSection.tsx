@@ -4,12 +4,12 @@ import { useState } from "react";
 import {
   PhoneCall,
   Mail,
-  MapPin,
   Clock,
   Send,
   CheckCircle2,
   Building,
 } from "lucide-react";
+import { TN_DISTRICTS_DATA } from "@/data/mockData";
 
 interface ContactProps {
   lang: "ta" | "en";
@@ -230,13 +230,17 @@ export default function ContactSection({ lang }: ContactProps) {
                       <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1">
                         மாவட்டம் (District) *
                       </label>
-                      <input
-                        type="text"
+                      <select
                         value={contactData.district}
                         onChange={(e) => updateContactField("district", e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden text-sm"
-                        placeholder="e.g. Salem, Coimbatore, Erode"
-                      />
+                        className="w-full px-4 py-2.5 rounded-xl border border-[#E2E8F0] focus:border-[#15803D] outline-hidden text-sm bg-white"
+                      >
+                        {Object.keys(TN_DISTRICTS_DATA).map((dist) => (
+                          <option key={dist} value={dist}>
+                            {dist}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-[#1E293B] uppercase mb-1">

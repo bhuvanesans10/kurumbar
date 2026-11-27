@@ -28,6 +28,48 @@ export const ADMIN_CREDENTIALS = {
   role: 'மாநில முதன்மை நிர்வாகி (State Super Administrator)',
 }
 
+export const TN_ADMIN_DISTRICTS = [
+  'அரியலூர் (Ariyalur)',
+  'செங்கல்பட்டு (Chengalpattu)',
+  'சென்னை (Chennai)',
+  'கோயம்புத்தூர் (Coimbatore)',
+  'கடலூர் (Cuddalore)',
+  'தருமபுரி (Dharmapuri)',
+  'திண்டுக்கல் (Dindigul)',
+  'ஈரோடு (Erode)',
+  'கள்ளக்குறிச்சி (Kallakurichi)',
+  'காஞ்சிபுரம் (Kanchipuram)',
+  'கன்னியாகுமரி (Kanyakumari)',
+  'கரூர் (Karur)',
+  'கிருஷ்ணகிரி (Krishnagiri)',
+  'மதுரை (Madurai)',
+  'மயிலாடுதுறை (Mayiladuthurai)',
+  'நாகப்பட்டினம் (Nagapattinam)',
+  'நாமக்கல் (Namakkal)',
+  'நீலகிரி (Nilgiris)',
+  'பெரம்பலூர் (Perambalur)',
+  'புதுக்கோட்டை (Pudukkottai)',
+  'இராமநாதபுரம் (Ramanathapuram)',
+  'ராணிப்பேட்டை (Ranipet)',
+  'சேலம் (Salem)',
+  'சிவகங்கை (Sivaganga)',
+  'தென்காசி (Tenkasi)',
+  'தஞ்சாவூர் (Thanjavur)',
+  'தேனி (Theni)',
+  'தூத்துக்குடி (Thoothukudi)',
+  'திருச்சிராப்பள்ளி (Tiruchirappalli)',
+  'திருநெல்வேலி (Tirunelveli)',
+  'திருப்பத்தூர் (Tirupathur)',
+  'திருப்பூர் (Tiruppur)',
+  'திருவள்ளூர் (Tiruvallur)',
+  'திருவண்ணாமலை (Tiruvannamalai)',
+  'திருவாரூர் (Tiruvarur)',
+  'வேலூர் (Vellore)',
+  'விழுப்புரம் (Viluppuram)',
+  'விருதுநகர் (Virudhunagar)',
+  'இதர மாவட்டம் (Other)',
+]
+
 interface MemberApplication {
   id: string
   realDbId?: string
@@ -368,7 +410,11 @@ export default function App() {
       app.nameEn.toLowerCase().includes(searchQuery.toLowerCase()) ||
       app.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       app.phone.includes(searchQuery)
-    const matchesDistrict = districtFilter === 'ALL' || app.district.includes(districtFilter)
+    const matchesDistrict =
+      districtFilter === 'ALL' ||
+      app.district.toLowerCase().includes(districtFilter.toLowerCase()) ||
+      districtFilter.toLowerCase().includes(app.district.toLowerCase()) ||
+      districtFilter.split(' ').some((part) => part.length > 2 && app.district.toLowerCase().includes(part.toLowerCase()))
     const matchesStatus = statusFilter === 'ALL' || app.status === statusFilter
     return matchesSearch && matchesDistrict && matchesStatus
   })
@@ -730,14 +776,14 @@ export default function App() {
                 <select
                   value={districtFilter}
                   onChange={(e) => setDistrictFilter(e.target.value)}
-                  className="px-3 py-2 rounded-xl border border-[#CBD5E1] text-xs font-bold text-[#1E293B] bg-white outline-hidden"
+                  className="px-3 py-2 rounded-xl border border-[#CBD5E1] text-xs font-bold text-[#1E293B] bg-white outline-hidden max-w-[200px]"
                 >
                   <option value="ALL">அனைத்து மாவட்டங்கள் (All Districts)</option>
-                  <option value="சேலம்">சேலம் (Salem)</option>
-                  <option value="ஈரோடு">ஈரோடு (Erode)</option>
-                  <option value="தருமபுரி">தருமபுரி (Dharmapuri)</option>
-                  <option value="கிருஷ்ணகிரி">கிருஷ்ணகிரி (Krishnagiri)</option>
-                  <option value="கோயம்புத்தூர்">கோயம்புத்தூர் (Coimbatore)</option>
+                  {TN_ADMIN_DISTRICTS.map((dist) => (
+                    <option key={dist} value={dist}>
+                      {dist}
+                    </option>
+                  ))}
                 </select>
 
                 <select
