@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import jsQR from "jsQR";
+import jsQR from "jsqr";
 import {
   ShieldCheck,
   CheckCircle2,
