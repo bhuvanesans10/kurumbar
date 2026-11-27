@@ -145,8 +145,10 @@ async function main() {
       sellerPhone: "9842154321",
       sellerDistrict: "சேலம் (Salem)",
       location: "மேச்சேரி, சேலம்",
-      descriptionTa: "100% தூய குறும்பை நாட்டு ஆட்டு உரோமத்தால் கைத்தறியில் பாரம்பரிய முறையில் நெய்யப்பட்ட தடிமனான கதகதப்பான கம்பளி. ஆயுள் 30 ஆண்டுகள்.",
-      descriptionEn: "100% pure native Kurumba sheep wool handwoven thick blanket. Extreme winter thermal durability lasting over 30 years.",
+      descriptionTa:
+        "100% தூய குறும்பை நாட்டு ஆட்டு உரோமத்தால் கைத்தறியில் பாரம்பரிய முறையில் நெய்யப்பட்ட தடிமனான கதகதப்பான கம்பளி. ஆயுள் 30 ஆண்டுகள்.",
+      descriptionEn:
+        "100% pure native Kurumba sheep wool handwoven thick blanket. Extreme winter thermal durability lasting over 30 years.",
       imageUrl: "/images/realistic/wool_kambli.jpg",
       isVerified: true,
       status: ProductStatus.ACTIVE,
@@ -161,8 +163,10 @@ async function main() {
       sellerPhone: "9443212345",
       sellerDistrict: "ஈரோடு (Erode)",
       location: "அந்தியூர் காடுகள் பகுதி, ஈரோடு",
-      descriptionTa: "மேய்ச்சல் முறையில் வளர்க்கப்பட்ட ஆரோக்கியமான 25 நாட்டு குறும்பை ஆடுகள் & கிடாய்கள் விற்பனைக்கு. நோய் எதிர்ப்பு சக்தி வாய்ந்தவை.",
-      descriptionEn: "25 naturally grazed healthy indigenous Kurumbai sheep and rams available for breeding and farming.",
+      descriptionTa:
+        "மேய்ச்சல் முறையில் வளர்க்கப்பட்ட ஆரோக்கியமான 25 நாட்டு குறும்பை ஆடுகள் & கிடாய்கள் விற்பனைக்கு. நோய் எதிர்ப்பு சக்தி வாய்ந்தவை.",
+      descriptionEn:
+        "25 naturally grazed healthy indigenous Kurumbai sheep and rams available for breeding and farming.",
       imageUrl: "/images/realistic/sheep_kurumba.jpg",
       isVerified: true,
       status: ProductStatus.ACTIVE,
@@ -177,14 +181,17 @@ async function main() {
       sellerPhone: "9789012345",
       sellerDistrict: "தருமபுரி (Dharmapuri)",
       location: "ஒகேனக்கல் வனப்பகுதி, தருமபுரி",
-      descriptionTa: "காடுகளிலிருந்து இயற்கையாக எடுக்கப்பட்ட 100% தூய இயற்கை மலைத்தேன். எந்த ரசாயன கலப்பும் இன்றி பாரம்பரியமாக வடிகட்டப்பட்டது.",
-      descriptionEn: "100% raw, unpasteurized natural honey collected traditionally from dense mountain forests. Pure medicinal grade.",
+      descriptionTa:
+        "காடுகளிலிருந்து இயற்கையாக எடுக்கப்பட்ட 100% தூய இயற்கை மலைத்தேன். எந்த ரசாயன கலப்பும் இன்றி பாரம்பரியமாக வடிகட்டப்பட்டது.",
+      descriptionEn:
+        "100% raw, unpasteurized natural honey collected traditionally from dense mountain forests. Pure medicinal grade.",
       imageUrl: "/images/realistic/turmeric_spices.jpg",
       isVerified: true,
       status: ProductStatus.ACTIVE,
     },
     {
-      titleTa: "பாரம்பரிய நாட்டு தினை & சாமை (Organic Native Millets - Thinai & Saamai)",
+      titleTa:
+        "பாரம்பரிய நாட்டு தினை & சாமை (Organic Native Millets - Thinai & Saamai)",
       titleEn: "Organic Native Millets Cultivated by Community Farmers",
       category: ProductCategory.MILLETS,
       price: 180,
@@ -193,8 +200,10 @@ async function main() {
       sellerPhone: "9894056789",
       sellerDistrict: "கிருஷ்ணகிரி (Krishnagiri)",
       location: "ஊத்தங்கரை, கிருஷ்ணகிரி",
-      descriptionTa: "மானாவாரி விவசாய முறையில் இயற்கை உரங்களால் விளைவிக்கப்பட்ட ஊட்டச்சத்து மிகுந்த பாரம்பரிய சிறுதானியங்கள்.",
-      descriptionEn: "Naturally grown, pesticide-free heritage millets rich in fiber and iron, direct from Kurumbar dryland farming families.",
+      descriptionTa:
+        "மானாவாரி விவசாய முறையில் இயற்கை உரங்களால் விளைவிக்கப்பட்ட ஊட்டச்சத்து மிகுந்த பாரம்பரிய சிறுதானியங்கள்.",
+      descriptionEn:
+        "Naturally grown, pesticide-free heritage millets rich in fiber and iron, direct from Kurumbar dryland farming families.",
       imageUrl: "/images/realistic/sesame_oil.jpg",
       isVerified: true,
       status: ProductStatus.ACTIVE,
@@ -207,6 +216,11 @@ async function main() {
     });
     if (!existing) {
       await prisma.marketProduct.create({ data: m });
+    } else {
+      await prisma.marketProduct.update({
+        where: { id: existing.id },
+        data: { imageUrl: m.imageUrl },
+      });
     }
   }
 
@@ -223,7 +237,8 @@ async function main() {
       salaryRange: "₹8,00,000 - ₹14,00,000 / ஆண்டு",
       experience: "3+ ஆண்டுகள் அனுபவம்",
       education: "B.E / B.Tech / MCA",
-      description: "React, Node.js, Fastify மற்றும் PostgreSQL தொழில்நுட்பங்களில் திறமை வாய்ந்த சமுதாய பட்டதாரிகளுக்கு முன்னுரிமை.",
+      description:
+        "React, Node.js, Fastify மற்றும் PostgreSQL தொழில்நுட்பங்களில் திறமை வாய்ந்த சமுதாய பட்டதாரிகளுக்கு முன்னுரிமை.",
       contactPhone: "9443212345",
       contactEmail: "careers@apextech.com",
       status: JobStatus.ACTIVE,
@@ -238,7 +253,8 @@ async function main() {
       salaryRange: "₹25,000 - ₹35,000 / மாதம்",
       experience: "2 ஆண்டுகள் அனுபவம்",
       education: "Diploma in Textile / Any Degree",
-      description: "நூல் தறி உற்பத்தி மற்றும் தொழிலாளர் மேலாண்மை பணிகளுக்கான மேற்பார்வையாளர் வேலைவாய்ப்பு.",
+      description:
+        "நூல் தறி உற்பத்தி மற்றும் தொழிலாளர் மேலாண்மை பணிகளுக்கான மேற்பார்வையாளர் வேலைவாய்ப்பு.",
       contactPhone: "9842154321",
       contactEmail: "jobs@kongutex.in",
       status: JobStatus.ACTIVE,
@@ -253,7 +269,8 @@ async function main() {
       salaryRange: "₹20,000 - ₹30,000 / மாதம்",
       experience: "முன் அனுபவம் வரவேற்கப்படுகிறது",
       education: "Diploma in Agri/Livestock or Any Degree",
-      description: "செம்மறி ஆடு வளர்ப்பு, மேய்ச்சல் பராமரிப்பு மற்றும் இயற்கை உழவு பணிகளை மேற்பார்வையிட சமுதாய இளைஞர்கள் தேவை.",
+      description:
+        "செம்மறி ஆடு வளர்ப்பு, மேய்ச்சல் பராமரிப்பு மற்றும் இயற்கை உழவு பணிகளை மேற்பார்வையிட சமுதாய இளைஞர்கள் தேவை.",
       contactPhone: "9789012345",
       contactEmail: "farms@greenpastures.in",
       status: JobStatus.ACTIVE,
@@ -273,36 +290,51 @@ async function main() {
   console.log("📰 Seeding News Articles...");
   const newsArticles = [
     {
-      titleTa: "ஸ்ரீ பீரேஸ்வர சுவாமி & மல்லிகார்ஜுன சுவாமி மகா கும்பாபிஷேக விழா அழைப்பிதழ்",
-      titleEn: "Sri Beereswarar & Mallikarjuna Swamy Temple Maha Kumbabishekam Invitation",
+      titleTa:
+        "ஸ்ரீ பீரேஸ்வர சுவாமி & மல்லிகார்ஜுன சுவாமி மகா கும்பாபிஷேக விழா அழைப்பிதழ்",
+      titleEn:
+        "Sri Beereswarar & Mallikarjuna Swamy Temple Maha Kumbabishekam Invitation",
       category: NewsCategory.FESTIVAL,
-      summaryTa: "நமது குறும்பர் சமூக குலதெய்வ திருத்தலத்தில் நடைபெற உள்ள மகா கும்பாபிஷேக திருவிழா. அனைத்து மாவட்ட சமுதாய சொந்தங்களும் குடும்பத்துடன் பங்கேற்று நலம் பெற வேண்டுகிறோம்.",
-      summaryEn: "Grand Maha Kumbabishekam temple festival of our sacred ancestral heritage deity. Cordial invitation to all community families.",
-      content: "சேலம் மாவட்டம் மேச்சேரி அருகே அமைந்துள்ள அருள்மிகு ஸ்ரீ பீரேஸ்வர சுவாமி திருத்தலத்தில் வரும் மார்ச் 12, 2026 அன்று மகா கும்பாபிஷேகம் வெகுவிமரிசையாக நடைபெற உள்ளது.",
+      summaryTa:
+        "நமது குறும்பர் சமூக குலதெய்வ திருத்தலத்தில் நடைபெற உள்ள மகா கும்பாபிஷேக திருவிழா. அனைத்து மாவட்ட சமுதாய சொந்தங்களும் குடும்பத்துடன் பங்கேற்று நலம் பெற வேண்டுகிறோம்.",
+      summaryEn:
+        "Grand Maha Kumbabishekam temple festival of our sacred ancestral heritage deity. Cordial invitation to all community families.",
+      content:
+        "சேலம் மாவட்டம் மேச்சேரி அருகே அமைந்துள்ள அருள்மிகு ஸ்ரீ பீரேஸ்வர சுவாமி திருத்தலத்தில் வரும் மார்ச் 12, 2026 அன்று மகா கும்பாபிஷேகம் வெகுவிமரிசையாக நடைபெற உள்ளது.",
       imageUrl: "/images/realistic/temple_gopuram.jpg",
       eventDate: "12 மார்ச் 2026",
       eventLocation: "மேச்சேரி திருத்தலம், சேலம் மாவட்டம்",
       isPublished: true,
     },
     {
-      titleTa: "2026-ஆம் கல்வி ஆண்டு: குறும்பர் சமூக மாணவர்களுக்கான கல்வி உதவித்தொகை விண்ணப்பம் துவக்கம்",
-      titleEn: "Academic Year 2026: Educational Scholarships for Kurumbar Community Students",
+      titleTa:
+        "2026-ஆம் கல்வி ஆண்டு: குறும்பர் சமூக மாணவர்களுக்கான கல்வி உதவித்தொகை விண்ணப்பம் துவக்கம்",
+      titleEn:
+        "Academic Year 2026: Educational Scholarships for Kurumbar Community Students",
       category: NewsCategory.SCHOLARSHIP,
-      summaryTa: "10 மற்றும் 12-ஆம் வகுப்பு பொதுத்தேர்வில் 85% மேல் மதிப்பெண் பெற்ற மற்றும் மருத்துவம்/பொறியியல் பயிலும் சமூக ஏழை மாணவர்களுக்கு ₹25,000 வரை கல்வி உதவித்தொகை.",
-      summaryEn: "Merit-cum-means scholarship grant of up to ₹25,000 for high-achieving community students enrolled in higher education.",
-      content: "தமிழ்நாடு குறும்பர் சமுதாய நல அறக்கட்டளை மூலம் உயர்கல்வி பயிலும் மாணவ, மாணவியருக்கு கல்வி உதவித்தொகை வழங்க விண்ணப்பங்கள் வரவேற்கப்படுகின்றன.",
+      summaryTa:
+        "10 மற்றும் 12-ஆம் வகுப்பு பொதுத்தேர்வில் 85% மேல் மதிப்பெண் பெற்ற மற்றும் மருத்துவம்/பொறியியல் பயிலும் சமூக ஏழை மாணவர்களுக்கு ₹25,000 வரை கல்வி உதவித்தொகை.",
+      summaryEn:
+        "Merit-cum-means scholarship grant of up to ₹25,000 for high-achieving community students enrolled in higher education.",
+      content:
+        "தமிழ்நாடு குறும்பர் சமுதாய நல அறக்கட்டளை மூலம் உயர்கல்வி பயிலும் மாணவ, மாணவியருக்கு கல்வி உதவித்தொகை வழங்க விண்ணப்பங்கள் வரவேற்கப்படுகின்றன.",
       imageUrl: "/images/realistic/student_education.jpg",
       eventDate: "28 பிப்ரவரி 2026",
       eventLocation: "மாநில தலைமை அலுவலகம், ஈரோடு",
       isPublished: true,
     },
     {
-      titleTa: "தமிழ்நாடு மாநில அளவிலான குறும்பர் சமூக மாநாடு & மாபெரும் இலவச திருமண சுயவரம்",
-      titleEn: "Tamil Nadu State Kurumbar Community Convention & Free Matrimony Swayamvaram",
+      titleTa:
+        "தமிழ்நாடு மாநில அளவிலான குறும்பர் சமூக மாநாடு & மாபெரும் இலவச திருமண சுயவரம்",
+      titleEn:
+        "Tamil Nadu State Kurumbar Community Convention & Free Matrimony Swayamvaram",
       category: NewsCategory.MEETING,
-      summaryTa: "கோயம்புத்தூரில் 38 மாவட்ட பிரதிநிதிகள் மற்றும் இளைஞரணி பங்கேற்கும் மாநில மாநாடு. அன்றைய தினம் 500+ வரன்களுக்கான இலவச சுயவர மேடை அமைக்கப்படுகிறது.",
-      summaryEn: "Statewide community convention in Coimbatore uniting 38 district delegates along with a massive free matrimony matching event.",
-      content: "சமுதாய ஒற்றுமை, இளைஞர் தொழில்முனைவு மற்றும் கலாச்சார விழிப்புணர்வை முன்னிறுத்தி கோயம்புத்தூரில் மாபெரும் மாநாடு நடைபெற உள்ளது.",
+      summaryTa:
+        "கோயம்புத்தூரில் 38 மாவட்ட பிரதிநிதிகள் மற்றும் இளைஞரணி பங்கேற்கும் மாநில மாநாடு. அன்றைய தினம் 500+ வரன்களுக்கான இலவச சுயவர மேடை அமைக்கப்படுகிறது.",
+      summaryEn:
+        "Statewide community convention in Coimbatore uniting 38 district delegates along with a massive free matrimony matching event.",
+      content:
+        "சமுதாய ஒற்றுமை, இளைஞர் தொழில்முனைவு மற்றும் கலாச்சார விழிப்புணர்வை முன்னிறுத்தி கோயம்புத்தூரில் மாபெரும் மாநாடு நடைபெற உள்ளது.",
       imageUrl: "/images/realistic/community_meeting.jpg",
       eventDate: "15 ஏப்ரல் 2026",
       eventLocation: "கொடிசியா வளாகம், கோயம்புத்தூர்",
@@ -316,6 +348,11 @@ async function main() {
     });
     if (!existing) {
       await prisma.newsArticle.create({ data: n });
+    } else {
+      await prisma.newsArticle.update({
+        where: { id: existing.id },
+        data: { imageUrl: n.imageUrl },
+      });
     }
   }
 
