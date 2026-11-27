@@ -1098,7 +1098,7 @@ export default function MemberRegistration({ lang }: MemberRegistrationProps) {
                         <div className="flex items-center gap-2.5">
                           <div className="w-10 h-10 bg-white rounded-xl p-1 flex items-center justify-center">
                             <Image
-                              src="/brand/logo-concept-1-icon.png"
+                              src="/brand/logo.png"
                               alt="Kurumbar Logo"
                               width={36}
                               height={36}
