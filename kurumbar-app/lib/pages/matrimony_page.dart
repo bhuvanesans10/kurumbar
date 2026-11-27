@@ -25,7 +25,7 @@ class _MatrimonyPageState extends State<MatrimonyPage> {
       'kulam': 'செல்ல குலம் (Chella Kulam)',
       'district': 'ஈரோடு (Erode)',
       'salary': '₹18 LPA',
-      'image': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400',
+      'image': 'assets/images/realistic/groom_karthikeyan.jpg',
     },
     {
       'id': 'KM-M-102',
@@ -37,7 +37,7 @@ class _MatrimonyPageState extends State<MatrimonyPage> {
       'kulam': 'மன்னாடியார் குலம் (Mannadiyar)',
       'district': 'கோயம்புத்தூர் (Coimbatore)',
       'salary': '₹14 LPA',
-      'image': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400',
+      'image': 'assets/images/realistic/groom_dinesh.jpg',
     },
   ];
 
@@ -52,7 +52,7 @@ class _MatrimonyPageState extends State<MatrimonyPage> {
       'kulam': 'காடை குலம் (Kaadai Kulam)',
       'district': 'சேலம் (Salem)',
       'salary': 'Govt Scale',
-      'image': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
+      'image': 'assets/images/realistic/bride_priyadarshini.jpg',
     },
     {
       'id': 'KM-F-202',
@@ -64,7 +64,7 @@ class _MatrimonyPageState extends State<MatrimonyPage> {
       'kulam': 'பெரியான குலம் (Periyana Kulam)',
       'district': 'தருமபுரி (Dharmapuri)',
       'salary': '₹12 LPA',
-      'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400',
+      'image': 'assets/images/realistic/bride_sowmiya.jpg',
     },
   ];
 
@@ -237,7 +237,9 @@ class _MatrimonyPageState extends State<MatrimonyPage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               image: DecorationImage(
-                                image: NetworkImage(p['image']),
+                                image: p['image'].toString().startsWith('http')
+                                    ? NetworkImage(p['image']) as ImageProvider
+                                    : AssetImage(p['image']) as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
                             ),

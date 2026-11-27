@@ -30,7 +30,23 @@ export default function MarketplaceSection({ lang }: MarketplaceProps) {
         if (res.ok) {
           const data = await res.json();
           if (data.items && Array.isArray(data.items) && data.items.length > 0) {
-            const mapped: MarketItem[] = data.items.map((m: any) => ({
+            const mapped: MarketItem[] = (data.items as Array<{
+              id: string;
+              titleTa: string;
+              titleEn: string;
+              category: string;
+              price: number;
+              unit?: string;
+              sellerName: string;
+              sellerPhone: string;
+              sellerDistrict: string;
+              location?: string;
+              imageUrl?: string;
+              descriptionTa?: string;
+              descriptionEn?: string;
+              status: string;
+              isVerified: boolean;
+            }>).map((m) => ({
               id: m.id,
               title: isTa ? m.titleTa : m.titleEn,
               category:
@@ -40,15 +56,17 @@ export default function MarketplaceSection({ lang }: MarketplaceProps) {
                   ? "HANDLOOM"
                   : "AGRICULTURE",
               priceText: `₹${m.price.toLocaleString("en-IN")}${m.unit ? ` (${m.unit})` : ""}`,
+              priceType: "FIXED" as "FIXED" | "NEGOTIABLE",
               price: m.price,
               sellerName: m.sellerName,
               sellerMobile: m.sellerPhone,
               district: m.sellerDistrict,
               location: m.location || m.sellerDistrict,
-              imageUrl: m.imageUrl || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600",
-              description: isTa
-                ? m.descriptionTa || m.descriptionEn
-                : m.descriptionEn || m.descriptionTa,
+              imageUrl: m.imageUrl || "/images/realistic/wool_kambli.jpg",
+              description:
+                (isTa
+                  ? m.descriptionTa || m.descriptionEn
+                  : m.descriptionEn || m.descriptionTa) || "",
               inStock: m.status === "ACTIVE",
               verified: m.isVerified,
             }));

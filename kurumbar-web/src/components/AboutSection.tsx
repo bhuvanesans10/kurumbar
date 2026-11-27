@@ -26,7 +26,7 @@ export default function AboutSection({ lang }: AboutProps) {
             <div className="relative mx-auto max-w-md lg:max-w-none">
               <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-[#FAFAF5]">
                 <Image
-                  src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=700&auto=format&fit=crop&q=80"
+                  src="/images/realistic/temple_heritage.jpg"
                   alt="Kurumbar Cultural Heritage"
                   width={600}
                   height={500}

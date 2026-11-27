@@ -27,13 +27,24 @@ export default function NewsSection({ lang }: NewsProps) {
         if (res.ok) {
           const data = await res.json();
           if (data.items && Array.isArray(data.items) && data.items.length > 0) {
-            const mapped: NewsItem[] = data.items.map((n: any) => ({
+            const mapped: NewsItem[] = (data.items as Array<{
+              id: string;
+              titleTa: string;
+              titleEn?: string;
+              category: string;
+              eventDate?: string;
+              createdAt: string;
+              summaryTa: string;
+              summaryEn?: string;
+              imageUrl?: string;
+            }>).map((n) => ({
               id: n.id,
               title: isTa ? n.titleTa : n.titleEn || n.titleTa,
               category: n.category as "FESTIVAL" | "SCHOLARSHIP" | "MEETING",
               date: n.eventDate || new Date(n.createdAt).toLocaleDateString("ta-IN"),
+              fullDate: n.eventDate || new Date(n.createdAt).toLocaleDateString("en-US"),
               summary: isTa ? n.summaryTa : n.summaryEn || n.summaryTa,
-              imageUrl: n.imageUrl || "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600",
+              imageUrl: n.imageUrl || "/images/realistic/temple_gopuram.jpg",
               link: "#",
             }));
             setNews(mapped);

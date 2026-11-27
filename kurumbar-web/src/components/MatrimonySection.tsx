@@ -37,7 +37,23 @@ export default function MatrimonySection({ lang }: MatrimonyProps) {
         if (res.ok) {
           const data = await res.json();
           if (data.items && Array.isArray(data.items) && data.items.length > 0) {
-            const mapped: MatrimonyItem[] = data.items.map((m: any) => ({
+            const mapped: MatrimonyItem[] = (data.items as Array<{
+              id: string;
+              profileId?: string;
+              nameTa: string;
+              nameEn: string;
+              gender: string;
+              age: number;
+              height?: string;
+              education: string;
+              profession: string;
+              city?: string;
+              district: string;
+              kulam: string;
+              nakshatram?: string;
+              photoUrl?: string;
+              status: string;
+            }>).map((m) => ({
               id: m.profileId || m.id,
               name: isTa ? m.nameTa : m.nameEn,
               gender: m.gender === "FEMALE" ? "BRIDE" : "GROOM",
@@ -49,11 +65,14 @@ export default function MatrimonySection({ lang }: MatrimonyProps) {
               district: m.district,
               kulam: m.kulam,
               star: m.nakshatram || "ரோகிணி (Rohini)",
+              dob: "01-Jan-2000",
+              rasi: "சிம்மம் (Simha)",
+              profileCreatedBy: "பெற்றோர் (Parents)",
               photoUrl:
                 m.photoUrl ||
                 (m.gender === "FEMALE"
-                  ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400"
-                  : "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400"),
+                  ? "/images/realistic/bride_priyadarshini.jpg"
+                  : "/images/realistic/groom_karthikeyan.jpg"),
               verified: m.status === "APPROVED",
             }));
             setProfiles(mapped);

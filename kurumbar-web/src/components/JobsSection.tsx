@@ -29,7 +29,7 @@ export default function JobsSection({ lang }: JobsProps) {
         if (res.ok) {
           const data = await res.json();
           if (data.items && Array.isArray(data.items) && data.items.length > 0) {
-            const mapped: JobItem[] = data.items.map((j: any) => ({
+            const mapped: JobItem[] = (data.items as Array<Record<string, string>>).map((j) => ({
               id: j.id,
               title: isTa ? j.titleTa : j.titleEn,
               company: j.company,

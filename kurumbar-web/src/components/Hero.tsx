@@ -199,7 +199,7 @@ export default function Hero({ lang }: HeroProps) {
                       <span className="font-bold text-white text-sm">ஆர். கார்த்திக் (R. Karthik)</span>
                     </div>
                     <div>
-                      <span className="text-white/60 text-[10px] block font-medium">தந்தை பெயர் (Father's Name)</span>
+                      <span className="text-white/60 text-[10px] block font-medium">தந்தை பெயர் (Father&apos;s Name)</span>
                       <span className="font-semibold text-white/90">கே. ரங்கசாமி (K. Rangasamy)</span>
                     </div>
                     <div className="grid grid-cols-2 gap-2 pt-0.5">

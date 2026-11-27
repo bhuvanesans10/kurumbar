@@ -21,7 +21,7 @@ class _MarketplacePageState extends State<MarketplacePage> {
       'price': '₹2,800',
       'category': 'கைத்தறி (Handloom)',
       'rating': '4.9 ★',
-      'image': 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&q=80&w=400',
+      'image': 'assets/images/realistic/wool_kambli.jpg',
     },
     {
       'title': 'நாட்டு செம்மறி ஆடுகள் (Semmari Breeding Pair)',
@@ -29,7 +29,7 @@ class _MarketplacePageState extends State<MarketplacePage> {
       'price': '₹18,500',
       'category': 'கால்நடை (Livestock)',
       'rating': '5.0 ★',
-      'image': 'https://images.unsplash.com/photo-1484557052118-f32bd25b45b5?auto=format&fit=crop&q=80&w=400',
+      'image': 'assets/images/realistic/sheep_kurumba.jpg',
     },
     {
       'title': 'ஆட்டு உரம் - இயற்கை உரம் (50kg)',
@@ -37,7 +37,7 @@ class _MarketplacePageState extends State<MarketplacePage> {
       'price': '₹450',
       'category': 'இயற்கை உரம் (Organic)',
       'rating': '4.8 ★',
-      'image': 'https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&q=80&w=400',
+      'image': 'assets/images/realistic/turmeric_spices.jpg',
     },
   ];
 
@@ -251,7 +251,9 @@ class _MarketplacePageState extends State<MarketplacePage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
-                    image: NetworkImage(p['image']),
+                    image: p['image'].toString().startsWith('http')
+                        ? NetworkImage(p['image']) as ImageProvider
+                        : AssetImage(p['image']) as ImageProvider,
                     fit: BoxFit.cover,
                   ),
                 ),

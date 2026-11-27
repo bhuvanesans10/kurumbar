@@ -10,34 +10,34 @@ interface GalleryProps {
 
 const GALLERY_PHOTOS = [
   {
-    url: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80",
+    url: "/images/realistic/community_meeting.jpg",
     caption: "பாரம்பரிய சமுதாய மாநாடு & மூத்தோர் கௌரவிப்பு",
     category: "மாநாடு (Conference)",
   },
   {
-    url: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&auto=format&fit=crop&q=80",
+    url: "/images/realistic/temple_gopuram.jpg",
     caption: "ஸ்ரீ பீரேஸ்வரர் சுவாமி கோவில் திருவிழா & கும்பாபிஷேகம்",
     category: "திருவிழா (Temple Festival)",
   },
   {
-    url: "https://images.unsplash.com/photo-1484557052118-f32bd25b45b5?w=600&auto=format&fit=crop&q=80",
-    caption: "பாரம்பரிய மேய்ச்சல் & செம்மறி ஆடு வளர்ப்பு நிலங்கள்",
+    url: "/images/realistic/sheep_kurumba.jpg",
+    caption: "பாரம்பரிய குறும்பர் ஆடு வளர்ப்பு & மேய்ச்சல் வாழ்வியல்",
     category: "பாரம்பரியம் (Heritage)",
   },
   {
-    url: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=600&auto=format&fit=crop&q=80",
+    url: "/images/realistic/handloom_weaver.jpg",
     caption: "கைத்தறி கம்பளி நெசவு மற்றும் கலைக் கண்காட்சி",
     category: "கைத்தறி (Handloom)",
   },
   {
-    url: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&auto=format&fit=crop&q=80",
+    url: "/images/realistic/student_education.jpg",
     caption: "சமுதாய மாணவர்களுக்கான வருடாந்திர கல்வி விருது வழங்கும் விழா",
     category: "கல்வி (Education)",
   },
   {
-    url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&auto=format&fit=crop&q=80",
-    caption: "38 மாவட்ட குறும்பர் இளைஞரணி எழுச்சி மாநாடு",
-    category: "இளைஞரணி (Youth Meet)",
+    url: "/images/realistic/temple_heritage.jpg",
+    caption: "குறும்பர் வரலாற்றுச் சுவடுகள் & பண்பாட்டுத் திருத்தலங்கள்",
+    category: "வரலாறு (Heritage)",
   },
 ];
 
